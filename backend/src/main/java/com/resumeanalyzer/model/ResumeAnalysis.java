@@ -1,0 +1,73 @@
+package com.resumeanalyzer.model;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "resume_analysis")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class ResumeAnalysis {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, length = 500)
+    private String filename;
+
+    @Column(nullable = false)
+    private Integer score;
+
+    // Section scores
+    @Column
+    private Integer summaryScore;
+
+    @Column
+    private Integer skillsScore;
+
+    @Column
+    private Integer experienceScore;
+
+    @Column
+    private Integer formattingScore;
+
+    @Column
+    private Integer professionalismScore;
+
+    // Feedback text
+    @Lob
+    @Column(columnDefinition = "CLOB")
+    private String summaryFeedback;
+
+    @Lob
+    @Column(columnDefinition = "CLOB")
+    private String skillsFeedback;
+
+    @Lob
+    @Column(columnDefinition = "CLOB")
+    private String experienceFeedback;
+
+    @Lob
+    @Column(columnDefinition = "CLOB")
+    private String formattingFeedback;
+
+    @Lob
+    @Column(columnDefinition = "CLOB")
+    private String overallFeedback;
+
+    @Column(nullable = false)
+    private LocalDateTime submittedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        submittedAt = LocalDateTime.now();
+    }
+}
