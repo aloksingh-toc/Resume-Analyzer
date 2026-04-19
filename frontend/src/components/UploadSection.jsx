@@ -2,14 +2,14 @@ import { useState, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 
 const C = {
-  card:    '#1a1108',
-  surface: '#120c05',
-  border:  '#3d2510',
+  card:    'linear-gradient(145deg, #fffef8, #fef9c3)',
+  surface: 'linear-gradient(145deg, #fef9c3, #fef3c7)',
+  border:  '#f0d070',
   accent:  '#f59e0b',
   grad:    'linear-gradient(135deg, #f59e0b, #ea580c)',
-  text:    '#fef3e2',
-  sub:     '#c4935a',
-  muted:   '#7a5c3a',
+  text:    '#1c1917',
+  sub:     '#78350f',
+  muted:   '#a16207',
 }
 
 export default function UploadSection({ onAnalyze, loading }) {
@@ -51,7 +51,6 @@ export default function UploadSection({ onAnalyze, loading }) {
         <p style={styles.subtitle}>PDF only · Max 5 MB · Results in under 20 seconds</p>
       </div>
 
-      {/* Drop zone */}
       <div
         {...getRootProps()}
         style={{
@@ -77,7 +76,7 @@ export default function UploadSection({ onAnalyze, loading }) {
         ) : (
           <div style={styles.dropContent}>
             <div style={styles.uploadIcon}>
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke={isDragActive ? '#f59e0b' : '#7a5c3a'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke={isDragActive ? '#f59e0b' : '#a16207'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="16,16 12,12 8,16"/>
                 <line x1="12" y1="12" x2="12" y2="21"/>
                 <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
@@ -114,27 +113,27 @@ export default function UploadSection({ onAnalyze, loading }) {
 }
 
 const styles = {
-  container:    { background: C.card, border: `1px solid ${C.border}`, borderRadius: '20px', padding: '36px', maxWidth: '580px', margin: '0 auto', width: '100%' },
+  container:    { background: C.card, border: `1px solid ${C.border}`, borderRadius: '20px', padding: '36px', maxWidth: '580px', margin: '0 auto', width: '100%', boxShadow: '0 4px 24px rgba(245,158,11,0.10)' },
   header:       { textAlign: 'center', marginBottom: '24px' },
-  iconWrap:     { width: '52px', height: '52px', background: '#231708', border: `1px solid ${C.border}`, borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px' },
-  title:        { fontSize: '22px', fontWeight: '700', color: '#fef3e2', marginBottom: '6px', fontStyle: 'italic' },
-  subtitle:     { fontSize: '13px', color: '#7a5c3a' },
-  dropzone:     { border: `2px dashed ${C.border}`, borderRadius: '14px', padding: '36px 24px', textAlign: 'center', cursor: 'pointer', transition: 'all 0.2s', background: '#120c05', marginBottom: '14px' },
-  dzActive:     { borderColor: C.accent, background: '#1f1508', boxShadow: `0 0 20px ${C.accent}22` },
+  iconWrap:     { width: '52px', height: '52px', background: '#fff8e1', border: `1px solid ${C.border}`, borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px' },
+  title:        { fontSize: '22px', fontWeight: '700', color: C.text, marginBottom: '6px' },
+  subtitle:     { fontSize: '13px', color: C.muted },
+  dropzone:     { border: `2px dashed ${C.border}`, borderRadius: '14px', padding: '36px 24px', textAlign: 'center', cursor: 'pointer', transition: 'all 0.2s', background: C.surface, marginBottom: '14px' },
+  dzActive:     { borderColor: C.accent, background: '#fef3c7', boxShadow: `0 0 20px rgba(245,158,11,0.20)` },
   dzDisabled:   { opacity: 0.5, cursor: 'not-allowed' },
   filePreview:  { display: 'flex', alignItems: 'center', gap: '14px', justifyContent: 'center' },
-  fileIconWrap: { width: '44px', height: '44px', background: '#231708', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 },
-  fileName:     { color: '#fef3e2', fontWeight: '600', fontSize: '14px', textAlign: 'left', marginBottom: '2px' },
-  fileSize:     { color: '#7a5c3a', fontSize: '12px', textAlign: 'left' },
+  fileIconWrap: { width: '44px', height: '44px', background: '#fff8e1', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 },
+  fileName:     { color: C.text, fontWeight: '600', fontSize: '14px', textAlign: 'left', marginBottom: '2px' },
+  fileSize:     { color: C.muted, fontSize: '12px', textAlign: 'left' },
   dropContent:  {},
   uploadIcon:   { marginBottom: '12px' },
-  dropText:     { color: '#c4935a', fontWeight: '500', fontSize: '15px', marginBottom: '4px' },
-  dropHint:     { color: '#7a5c3a', fontSize: '13px' },
-  error:        { color: '#f87171', fontSize: '13px', marginBottom: '10px', textAlign: 'center' },
+  dropText:     { color: C.sub, fontWeight: '500', fontSize: '15px', marginBottom: '4px' },
+  dropHint:     { color: C.muted, fontSize: '13px' },
+  error:        { color: '#dc2626', fontSize: '13px', marginBottom: '10px', textAlign: 'center' },
   btnRow:       { display: 'flex', gap: '12px', justifyContent: 'center' },
-  removeBtn:    { background: 'transparent', border: `1px solid ${C.border}`, color: '#7a5c3a', padding: '11px 22px', borderRadius: '10px', cursor: 'pointer', fontSize: '14px', fontWeight: '500' },
-  analyzeBtn:   { background: C.grad, border: 'none', color: '#0d0905', padding: '12px 32px', borderRadius: '10px', cursor: 'pointer', fontSize: '15px', fontWeight: '700', flex: 1, maxWidth: '220px', boxShadow: '0 4px 14px rgba(245,158,11,0.3)' },
+  removeBtn:    { background: 'transparent', border: `1px solid ${C.border}`, color: C.muted, padding: '11px 22px', borderRadius: '10px', cursor: 'pointer', fontSize: '14px', fontWeight: '500' },
+  analyzeBtn:   { background: C.grad, border: 'none', color: '#fff', padding: '12px 32px', borderRadius: '10px', cursor: 'pointer', fontSize: '15px', fontWeight: '700', flex: 1, maxWidth: '220px', boxShadow: '0 4px 14px rgba(245,158,11,0.30)' },
   btnDisabled:  { opacity: 0.45, cursor: 'not-allowed', boxShadow: 'none' },
   loadingInner: { display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' },
-  spinner:      { display: 'inline-block', width: '15px', height: '15px', border: '2px solid rgba(13,9,5,0.3)', borderTop: '2px solid #0d0905', borderRadius: '50%', animation: 'spin 0.8s linear infinite' },
+  spinner:      { display: 'inline-block', width: '15px', height: '15px', border: '2px solid rgba(255,255,255,0.3)', borderTop: '2px solid #fff', borderRadius: '50%', animation: 'spin 0.8s linear infinite' },
 }

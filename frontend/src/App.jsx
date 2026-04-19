@@ -36,7 +36,6 @@ export default function App() {
   useEffect(() => {
     setUnauthorizedHandler(() => setIsAuthenticated(false))
     checkAuth()
-    // OAuth2 redirect success
     const params = new URLSearchParams(window.location.search)
     if (params.get('auth') === 'success') {
       window.history.replaceState({}, '', '/')
@@ -195,7 +194,6 @@ export default function App() {
               <h2 style={styles.resultTitle}>Analysis Results</h2>
             </div>
 
-            {/* Nudge banner for guests */}
             {!isAuthenticated && (
               <div style={styles.nudgeBanner}>
                 <span>✦ Sign in to save your history and get unlimited analyses</span>
@@ -260,7 +258,7 @@ const styles = {
   uploadView:  { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '32px' },
   hero:        { textAlign: 'center', maxWidth: '600px' },
   heroBadge:   { display: 'inline-block', background: '#231708', border: `1px solid ${C.border}`, color: C.accent, padding: '4px 14px', borderRadius: '999px', fontSize: '12px', fontWeight: '600', letterSpacing: '0.5px', marginBottom: '18px' },
-  heroTitle:   { fontSize: '52px', fontWeight: '800', color: C.text, lineHeight: '1.1', marginBottom: '16px', fontStyle: 'italic' },
+  heroTitle:   { fontSize: '68px', fontWeight: '800', color: C.text, lineHeight: '1.05', marginBottom: '20px', letterSpacing: '-2px' },
   heroSub:     { color: C.textSub, fontSize: '17px', lineHeight: '1.7', marginBottom: '12px' },
   freeNote:    { color: C.textMuted, fontSize: '13px', marginTop: '4px' },
   errorBox:    { background: '#2d0a0a', border: '1px solid #7f1d1d', color: '#fca5a5', padding: '14px 20px', borderRadius: '10px', maxWidth: '500px', textAlign: 'center' },
@@ -271,7 +269,7 @@ const styles = {
   resultToolbar:{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '20px' },
   backBtn:     { background: 'transparent', border: `1px solid ${C.border}`, color: C.textMuted, padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '13px' },
   resultTitle: { fontSize: '22px', fontWeight: '700', color: C.text },
-  nudgeBanner: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#1a1108', border: `1px solid ${C.border}`, borderLeft: `3px solid ${C.accent}`, borderRadius: '10px', padding: '12px 18px', marginBottom: '20px', color: C.textSub, fontSize: '14px' },
+  nudgeBanner: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'linear-gradient(145deg, #fffef8, #fef9c3)', border: `1px solid #f0d070`, borderLeft: `3px solid ${C.accent}`, borderRadius: '10px', padding: '12px 18px', marginBottom: '20px', color: '#78350f', fontSize: '14px' },
   nudgeBtn:    { background: C.gradient, border: 'none', color: '#0d0905', padding: '6px 16px', borderRadius: '7px', cursor: 'pointer', fontSize: '13px', fontWeight: '700', whiteSpace: 'nowrap' },
   resultGrid:  { display: 'grid', gridTemplateColumns: '320px 1fr', gap: '20px', alignItems: 'start' },
   historyView: { width: '100%', maxWidth: '700px', margin: '0 auto' },
