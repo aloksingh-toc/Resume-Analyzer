@@ -242,8 +242,8 @@ export default function App() {
 }
 
 const styles = {
-  page:        { minHeight: '100vh', display: 'flex', flexDirection: 'column', background: C.bg },
-  header:      { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 40px', borderBottom: `1px solid ${C.border}`, background: C.bg, position: 'sticky', top: 0, zIndex: 10 },
+  page:        { minHeight: '100vh', display: 'flex', flexDirection: 'column', background: `radial-gradient(ellipse 75% 55% at 0% 100%, rgba(178,7,16,0.28) 0%, transparent 55%), radial-gradient(ellipse 55% 45% at 100% 0%, rgba(120,5,10,0.22) 0%, transparent 55%), radial-gradient(ellipse 40% 35% at 50% 45%, rgba(60,0,5,0.12) 0%, transparent 55%), #080808` },
+  header:      { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 40px', borderBottom: `1px solid ${C.border}`, background: 'rgba(8,8,8,0.85)', backdropFilter: 'blur(12px)', position: 'sticky', top: 0, zIndex: 10 },
   logo:        { display: 'flex', alignItems: 'center', gap: '10px' },
   logoMark:    { width: '32px', height: '32px', borderRadius: '8px', background: C.gradient, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '900', fontSize: '16px', color: '#0d0905' },
   logoText:    { fontSize: '17px', fontWeight: '700', color: C.text, letterSpacing: '-0.3px' },
