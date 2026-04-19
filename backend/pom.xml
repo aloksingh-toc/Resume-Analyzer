@@ -15,7 +15,7 @@
     <artifactId>resume-analyzer</artifactId>
     <version>1.0.0</version>
     <name>resume-analyzer</name>
-    <description>AI-Powered Resume Analyzer using Spring Boot and OpenAI</description>
+    <description>AI-Powered Resume Analyzer using Spring Boot and Groq AI</description>
 
     <properties>
         <java.version>21</java.version>
@@ -72,6 +72,25 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- Spring Security -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
+        <!-- OAuth2 Client (Google, LinkedIn) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        </dependency>
+
+        <!-- Bucket4j rate limiting -->
+        <dependency>
+            <groupId>com.bucket4j</groupId>
+            <artifactId>bucket4j-core</artifactId>
+            <version>8.10.1</version>
         </dependency>
     </dependencies>
 
