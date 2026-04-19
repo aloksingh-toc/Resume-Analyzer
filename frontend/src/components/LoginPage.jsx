@@ -3,15 +3,15 @@ import { login } from '../services/api'
 
 const C = {
   bg:      '#0d0905',
-  card:    '#1a1108',
-  surface: '#231708',
-  border:  '#3d2510',
+  card:    'linear-gradient(145deg, #fffef8, #fef9c3)',
+  surface: 'linear-gradient(145deg, #fef9c3, #fef3c7)',
+  border:  '#f0d070',
   accent:  '#f59e0b',
   warm:    '#ea580c',
   grad:    'linear-gradient(135deg, #f59e0b, #ea580c)',
-  text:    '#fef3e2',
-  sub:     '#c4935a',
-  muted:   '#7a5c3a',
+  text:    '#1c1917',
+  sub:     '#78350f',
+  muted:   '#a16207',
 }
 
 export default function LoginPage({ onLogin, onClose, message }) {
@@ -47,20 +47,17 @@ export default function LoginPage({ onLogin, onClose, message }) {
         <button onClick={onClose} style={styles.closeBtn} aria-label="Close">✕</button>
       )}
 
-      {/* Logo */}
       <div style={styles.logoRow}>
         <div style={styles.logoMark}>R</div>
         <span style={styles.logoText}>ResumeAI</span>
       </div>
 
-      {/* Message (free tier nudge) */}
       {message && (
         <div style={styles.messageBanner}>
           <span>✦</span> {message}
         </div>
       )}
 
-      {/* Tabs */}
       <div style={styles.tabs}>
         <button
           onClick={() => setTab('signin')}
@@ -72,7 +69,6 @@ export default function LoginPage({ onLogin, onClose, message }) {
         >Sign Up</button>
       </div>
 
-      {/* OAuth Buttons */}
       <div style={styles.oauthSection}>
         <button onClick={() => handleOAuth('google')} style={styles.oauthBtn}>
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -91,7 +87,6 @@ export default function LoginPage({ onLogin, onClose, message }) {
         </button>
       </div>
 
-      {/* Divider (only on Sign In tab for local auth) */}
       {tab === 'signin' && (
         <>
           <div style={styles.divider}>
@@ -158,29 +153,29 @@ export default function LoginPage({ onLogin, onClose, message }) {
 }
 
 const styles = {
-  page:          { minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: C.bg, padding: '24px' },
+  page:          { minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0d0905', padding: '24px' },
   card:          { background: C.card, border: `1px solid ${C.border}`, borderRadius: '20px', padding: '36px', width: '100%', maxWidth: '420px', position: 'relative' },
-  cardModal:     { boxShadow: '0 25px 60px rgba(0,0,0,0.6)' },
+  cardModal:     { boxShadow: '0 25px 60px rgba(0,0,0,0.5)' },
   closeBtn:      { position: 'absolute', top: '16px', right: '16px', background: 'transparent', border: 'none', color: C.muted, fontSize: '18px', cursor: 'pointer', lineHeight: 1 },
   logoRow:       { display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px', justifyContent: 'center' },
-  logoMark:      { width: '34px', height: '34px', borderRadius: '8px', background: C.grad, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '900', fontSize: '16px', color: '#0d0905' },
+  logoMark:      { width: '34px', height: '34px', borderRadius: '8px', background: C.grad, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '900', fontSize: '16px', color: '#fff' },
   logoText:      { fontSize: '18px', fontWeight: '700', color: C.text },
-  messageBanner: { background: '#231708', border: `1px solid ${C.border}`, borderLeft: `3px solid ${C.accent}`, borderRadius: '8px', padding: '10px 14px', color: C.sub, fontSize: '13px', marginBottom: '16px', display: 'flex', gap: '8px', alignItems: 'flex-start' },
-  tabs:          { display: 'flex', background: '#120c05', borderRadius: '10px', padding: '4px', marginBottom: '20px', gap: '4px' },
+  messageBanner: { background: '#fef3c7', border: `1px solid ${C.border}`, borderLeft: `3px solid ${C.accent}`, borderRadius: '8px', padding: '10px 14px', color: C.sub, fontSize: '13px', marginBottom: '16px', display: 'flex', gap: '8px', alignItems: 'flex-start' },
+  tabs:          { display: 'flex', background: '#fef3c7', borderRadius: '10px', padding: '4px', marginBottom: '20px', gap: '4px' },
   tabBtn:        { flex: 1, padding: '8px', borderRadius: '8px', border: 'none', background: 'transparent', color: C.muted, cursor: 'pointer', fontSize: '14px', fontWeight: '500', transition: 'all 0.2s' },
-  tabActive:     { background: C.card, color: C.text, boxShadow: `0 1px 4px rgba(0,0,0,0.4)` },
+  tabActive:     { background: '#fffef8', color: C.text, boxShadow: '0 1px 4px rgba(0,0,0,0.10)' },
   oauthSection:  { display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '4px' },
-  oauthBtn:      { display: 'flex', alignItems: 'center', gap: '10px', padding: '11px 16px', background: '#231708', border: `1px solid ${C.border}`, borderRadius: '10px', color: C.text, cursor: 'pointer', fontSize: '14px', fontWeight: '500', transition: 'all 0.2s', justifyContent: 'center' },
-  oauthLinkedIn: { background: '#0a1628', border: '1px solid #1a3a6b' },
+  oauthBtn:      { display: 'flex', alignItems: 'center', gap: '10px', padding: '11px 16px', background: '#fef9c3', border: `1px solid ${C.border}`, borderRadius: '10px', color: C.text, cursor: 'pointer', fontSize: '14px', fontWeight: '500', transition: 'all 0.2s', justifyContent: 'center' },
+  oauthLinkedIn: { background: '#0a1628', border: '1px solid #1a3a6b', color: '#fff' },
   divider:       { display: 'flex', alignItems: 'center', gap: '12px', margin: '20px 0' },
   dividerLine:   { flex: 1, height: '1px', background: C.border },
   dividerText:   { color: C.muted, fontSize: '12px', whiteSpace: 'nowrap' },
   form:          { display: 'flex', flexDirection: 'column', gap: '14px' },
   field:         { display: 'flex', flexDirection: 'column', gap: '6px' },
   label:         { color: C.sub, fontSize: '13px', fontWeight: '500' },
-  input:         { background: '#120c05', border: `1px solid ${C.border}`, borderRadius: '8px', color: C.text, padding: '10px 14px', fontSize: '14px', outline: 'none', width: '100%', boxSizing: 'border-box', transition: 'border-color 0.2s' },
-  error:         { color: '#f87171', fontSize: '13px', margin: 0 },
-  submitBtn:     { background: C.grad, border: 'none', borderRadius: '10px', color: '#0d0905', fontSize: '15px', fontWeight: '700', padding: '12px', cursor: 'pointer', width: '100%', marginTop: '4px' },
+  input:         { background: '#fef9c3', border: `1px solid ${C.border}`, borderRadius: '8px', color: C.text, padding: '10px 14px', fontSize: '14px', outline: 'none', width: '100%', boxSizing: 'border-box', transition: 'border-color 0.2s' },
+  error:         { color: '#dc2626', fontSize: '13px', margin: 0 },
+  submitBtn:     { background: C.grad, border: 'none', borderRadius: '10px', color: '#fff', fontSize: '15px', fontWeight: '700', padding: '12px', cursor: 'pointer', width: '100%', marginTop: '4px' },
   btnDisabled:   { opacity: 0.6, cursor: 'not-allowed' },
   signupNote:    { paddingTop: '8px' },
 }
