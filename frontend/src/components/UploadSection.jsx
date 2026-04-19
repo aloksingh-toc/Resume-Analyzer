@@ -1,19 +1,25 @@
 import { useState, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 
+const C = {
+  card:    '#1a1108',
+  surface: '#120c05',
+  border:  '#3d2510',
+  accent:  '#f59e0b',
+  grad:    'linear-gradient(135deg, #f59e0b, #ea580c)',
+  text:    '#fef3e2',
+  sub:     '#c4935a',
+  muted:   '#7a5c3a',
+}
+
 export default function UploadSection({ onAnalyze, loading }) {
   const [selectedFile, setSelectedFile] = useState(null)
-  const [error, setError] = useState('')
+  const [error, setError]               = useState('')
 
-  const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
+  const onDrop = useCallback((accepted, rejected) => {
     setError('')
-    if (rejectedFiles.length > 0) {
-      setError('Please upload a valid PDF file (max 5MB).')
-      return
-    }
-    if (acceptedFiles.length > 0) {
-      setSelectedFile(acceptedFiles[0])
-    }
+    if (rejected.length > 0) { setError('Please upload a valid PDF file (max 5 MB).'); return }
+    if (accepted.length > 0)  setSelectedFile(accepted[0])
   }, [])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -25,41 +31,44 @@ export default function UploadSection({ onAnalyze, loading }) {
   })
 
   const handleAnalyze = () => {
-    if (!selectedFile) {
-      setError('Please select a PDF file first.')
-      return
-    }
+    if (!selectedFile) { setError('Please select a PDF file first.'); return }
     onAnalyze(selectedFile)
-  }
-
-  const handleRemove = () => {
-    setSelectedFile(null)
-    setError('')
   }
 
   return (
     <div style={styles.container}>
       <div style={styles.header}>
-        <div style={styles.iconWrap}>PDF</div>
+        <div style={styles.iconWrap}>
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14,2 14,8 20,8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10,9 9,9 8,9"/>
+          </svg>
+        </div>
         <h2 style={styles.title}>Upload Your Resume</h2>
-        <p style={styles.subtitle}>
-          Get an AI-powered score and actionable feedback in seconds
-        </p>
+        <p style={styles.subtitle}>PDF only · Max 5 MB · Results in under 20 seconds</p>
       </div>
 
-      {/* Dropzone */}
+      {/* Drop zone */}
       <div
         {...getRootProps()}
         style={{
           ...styles.dropzone,
-          ...(isDragActive ? styles.dropzoneActive : {}),
-          ...(loading ? styles.dropzoneDisabled : {}),
+          ...(isDragActive ? styles.dzActive : {}),
+          ...(loading      ? styles.dzDisabled : {}),
         }}
       >
         <input {...getInputProps()} />
         {selectedFile ? (
           <div style={styles.filePreview}>
-            <span style={styles.fileIcon}>[ PDF ]</span>
+            <div style={styles.fileIconWrap}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                <polyline points="14,2 14,8 20,8"/>
+              </svg>
+            </div>
             <div>
               <p style={styles.fileName}>{selectedFile.name}</p>
               <p style={styles.fileSize}>{(selectedFile.size / 1024).toFixed(1)} KB</p>
@@ -67,39 +76,37 @@ export default function UploadSection({ onAnalyze, loading }) {
           </div>
         ) : (
           <div style={styles.dropContent}>
-            <div style={styles.uploadIcon}>^ Upload</div>
-            <p style={styles.dropText}>
-              {isDragActive ? 'Drop your PDF here...' : 'Drag & drop your resume PDF here'}
-            </p>
-            <p style={styles.dropHint}>or click to browse · Max 5MB</p>
+            <div style={styles.uploadIcon}>
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke={isDragActive ? '#f59e0b' : '#7a5c3a'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="16,16 12,12 8,16"/>
+                <line x1="12" y1="12" x2="12" y2="21"/>
+                <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+              </svg>
+            </div>
+            <p style={styles.dropText}>{isDragActive ? 'Drop it here…' : 'Drag & drop your resume PDF'}</p>
+            <p style={styles.dropHint}>or click to browse</p>
           </div>
         )}
       </div>
 
       {error && <p style={styles.error}>{error}</p>}
 
-      {/* Buttons */}
       <div style={styles.btnRow}>
         {selectedFile && !loading && (
-          <button onClick={handleRemove} style={styles.removeBtn}>
+          <button onClick={() => { setSelectedFile(null); setError('') }} style={styles.removeBtn}>
             Remove
           </button>
         )}
         <button
           onClick={handleAnalyze}
           disabled={!selectedFile || loading}
-          style={{
-            ...styles.analyzeBtn,
-            ...(!selectedFile || loading ? styles.analyzeBtnDisabled : {}),
-          }}
+          style={{ ...styles.analyzeBtn, ...(!selectedFile || loading ? styles.btnDisabled : {}) }}
         >
           {loading ? (
             <span style={styles.loadingInner}>
-              <span style={styles.spinner} /> Analyzing...
+              <span style={styles.spinner} /> Analyzing…
             </span>
-          ) : (
-            'Analyze Resume'
-          )}
+          ) : 'Analyze Resume'}
         </button>
       </div>
     </div>
@@ -107,137 +114,27 @@ export default function UploadSection({ onAnalyze, loading }) {
 }
 
 const styles = {
-  container: {
-    background: 'linear-gradient(135deg, #1e293b 0%, #1a2540 100%)',
-    border: '1px solid #334155',
-    borderRadius: '20px',
-    padding: '36px',
-    maxWidth: '620px',
-    margin: '0 auto',
-  },
-  header: {
-    textAlign: 'center',
-    marginBottom: '28px',
-  },
-  iconWrap: {
-    fontSize: '48px',
-    marginBottom: '12px',
-  },
-  title: {
-    fontSize: '26px',
-    fontWeight: '700',
-    color: '#f1f5f9',
-    marginBottom: '8px',
-  },
-  subtitle: {
-    fontSize: '14px',
-    color: '#94a3b8',
-  },
-  dropzone: {
-    border: '2px dashed #334155',
-    borderRadius: '14px',
-    padding: '40px 24px',
-    textAlign: 'center',
-    cursor: 'pointer',
-    transition: 'all 0.2s ease',
-    background: '#0f172a',
-    marginBottom: '16px',
-  },
-  dropzoneActive: {
-    borderColor: '#6366f1',
-    background: '#1e1b4b',
-  },
-  dropzoneDisabled: {
-    opacity: 0.5,
-    cursor: 'not-allowed',
-  },
-  dropContent: {},
-  uploadIcon: {
-    fontSize: '36px',
-    marginBottom: '12px',
-  },
-  dropText: {
-    color: '#cbd5e1',
-    fontWeight: '500',
-    fontSize: '16px',
-    marginBottom: '6px',
-  },
-  dropHint: {
-    color: '#64748b',
-    fontSize: '13px',
-  },
-  filePreview: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '14px',
-    justifyContent: 'center',
-  },
-  fileIcon: {
-    fontSize: '32px',
-  },
-  fileName: {
-    color: '#e2e8f0',
-    fontWeight: '600',
-    fontSize: '15px',
-    textAlign: 'left',
-  },
-  fileSize: {
-    color: '#64748b',
-    fontSize: '13px',
-    textAlign: 'left',
-  },
-  error: {
-    color: '#f87171',
-    fontSize: '13px',
-    marginBottom: '12px',
-    textAlign: 'center',
-  },
-  btnRow: {
-    display: 'flex',
-    gap: '12px',
-    justifyContent: 'center',
-  },
-  removeBtn: {
-    background: 'transparent',
-    border: '1px solid #475569',
-    color: '#94a3b8',
-    padding: '12px 24px',
-    borderRadius: '10px',
-    cursor: 'pointer',
-    fontSize: '14px',
-    fontWeight: '500',
-    transition: 'all 0.2s',
-  },
-  analyzeBtn: {
-    background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
-    border: 'none',
-    color: '#fff',
-    padding: '12px 32px',
-    borderRadius: '10px',
-    cursor: 'pointer',
-    fontSize: '15px',
-    fontWeight: '600',
-    transition: 'all 0.2s',
-    flex: 1,
-    maxWidth: '220px',
-  },
-  analyzeBtnDisabled: {
-    opacity: 0.5,
-    cursor: 'not-allowed',
-  },
-  loadingInner: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px',
-    justifyContent: 'center',
-  },
-  spinner: {
-    display: 'inline-block',
-    width: '16px',
-    height: '16px',
-    border: '2px solid rgba(255,255,255,0.3)',
-    borderTop: '2px solid #fff',
-    borderRadius: '50%',
-    animation: 'spin 0.8s linear infinite',
-  },
+  container:    { background: C.card, border: `1px solid ${C.border}`, borderRadius: '20px', padding: '36px', maxWidth: '580px', margin: '0 auto', width: '100%' },
+  header:       { textAlign: 'center', marginBottom: '24px' },
+  iconWrap:     { width: '52px', height: '52px', background: '#231708', border: `1px solid ${C.border}`, borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px' },
+  title:        { fontSize: '22px', fontWeight: '700', color: '#fef3e2', marginBottom: '6px', fontStyle: 'italic' },
+  subtitle:     { fontSize: '13px', color: '#7a5c3a' },
+  dropzone:     { border: `2px dashed ${C.border}`, borderRadius: '14px', padding: '36px 24px', textAlign: 'center', cursor: 'pointer', transition: 'all 0.2s', background: '#120c05', marginBottom: '14px' },
+  dzActive:     { borderColor: C.accent, background: '#1f1508', boxShadow: `0 0 20px ${C.accent}22` },
+  dzDisabled:   { opacity: 0.5, cursor: 'not-allowed' },
+  filePreview:  { display: 'flex', alignItems: 'center', gap: '14px', justifyContent: 'center' },
+  fileIconWrap: { width: '44px', height: '44px', background: '#231708', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 },
+  fileName:     { color: '#fef3e2', fontWeight: '600', fontSize: '14px', textAlign: 'left', marginBottom: '2px' },
+  fileSize:     { color: '#7a5c3a', fontSize: '12px', textAlign: 'left' },
+  dropContent:  {},
+  uploadIcon:   { marginBottom: '12px' },
+  dropText:     { color: '#c4935a', fontWeight: '500', fontSize: '15px', marginBottom: '4px' },
+  dropHint:     { color: '#7a5c3a', fontSize: '13px' },
+  error:        { color: '#f87171', fontSize: '13px', marginBottom: '10px', textAlign: 'center' },
+  btnRow:       { display: 'flex', gap: '12px', justifyContent: 'center' },
+  removeBtn:    { background: 'transparent', border: `1px solid ${C.border}`, color: '#7a5c3a', padding: '11px 22px', borderRadius: '10px', cursor: 'pointer', fontSize: '14px', fontWeight: '500' },
+  analyzeBtn:   { background: C.grad, border: 'none', color: '#0d0905', padding: '12px 32px', borderRadius: '10px', cursor: 'pointer', fontSize: '15px', fontWeight: '700', flex: 1, maxWidth: '220px', boxShadow: '0 4px 14px rgba(245,158,11,0.3)' },
+  btnDisabled:  { opacity: 0.45, cursor: 'not-allowed', boxShadow: 'none' },
+  loadingInner: { display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' },
+  spinner:      { display: 'inline-block', width: '15px', height: '15px', border: '2px solid rgba(13,9,5,0.3)', borderTop: '2px solid #0d0905', borderRadius: '50%', animation: 'spin 0.8s linear infinite' },
 }

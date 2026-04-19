@@ -5,19 +5,45 @@
 }
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: #0f172a;
-  color: #e2e8f0;
+  font-family: 'Times New Roman', Georgia, Times, serif;
+  background: #0d0905;
+  color: #fef3e2;
   min-height: 100vh;
+}
+
+input, button, textarea, select {
+  font-family: 'Times New Roman', Georgia, Times, serif;
 }
 
 ::-webkit-scrollbar {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #1e293b;
+  background: #1a1108;
 }
 ::-webkit-scrollbar-thumb {
-  background: #475569;
+  background: #3d2510;
   border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #f59e0b;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
 }
