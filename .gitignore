@@ -2,9 +2,6 @@
 # Root .gitignore for resume-analyzer
 # =============================================
 
-# Backend sensitive config — NEVER commit
-backend/src/main/resources/application.properties
-
 # Maven build output
 backend/target/
 *.class
