@@ -120,7 +120,7 @@ export default function App() {
       <header style={styles.header}>
         <div style={styles.logo}>
           <div style={styles.logoMark}>R</div>
-          <span style={styles.logoText}>ResumeAI</span>
+          <span style={styles.logoText}>AI Resume Analyzer</span>
         </div>
         <nav style={styles.nav}>
           <button
