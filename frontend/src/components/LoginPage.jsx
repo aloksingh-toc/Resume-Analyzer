@@ -38,7 +38,8 @@ export default function LoginPage({ onLogin, onClose, message }) {
   }
 
   const handleOAuth = (provider) => {
-    window.location.href = `/oauth2/authorization/${provider}`
+    const backend = import.meta.env.VITE_API_URL || ''
+    window.location.href = `${backend}/oauth2/authorization/${provider}`
   }
 
   const card = (

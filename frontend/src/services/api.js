@@ -1,15 +1,15 @@
 import axios from 'axios'
 
-const API_BASE = import.meta.env.VITE_API_BASE || '/api/resume'
+const BACKEND = import.meta.env.VITE_API_URL || ''
 
 const api = axios.create({
-  baseURL: API_BASE,
+  baseURL: `${BACKEND}/api/resume`,
   timeout: 60000,
   withCredentials: true,
 })
 
 const authApi = axios.create({
-  baseURL: '/api/auth',
+  baseURL: `${BACKEND}/api/auth`,
   timeout: 10000,
   withCredentials: true,
 })
