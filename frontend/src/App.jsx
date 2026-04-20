@@ -8,15 +8,15 @@ import ResumeTips from './components/ResumeTips'
 import { analyzeResume, getHistory, getMe, logout, setUnauthorizedHandler } from './services/api'
 
 const C = {
-  bg:         '#0d0905',
-  card:       '#1a1108',
-  border:     '#3d2510',
+  bg:         '#080808',
+  card:       '#1a0505',
+  border:     '#2d0808',
   accent:     '#f59e0b',
   accentWarm: '#ea580c',
   gradient:   'linear-gradient(135deg, #f59e0b, #ea580c)',
   text:       '#fef3e2',
   textSub:    '#c4935a',
-  textMuted:  '#7a5c3a',
+  textMuted:  '#8a5a5a',
 }
 
 export default function App() {
@@ -249,15 +249,15 @@ const styles = {
   logoText:    { fontSize: '17px', fontWeight: '700', color: C.text, letterSpacing: '-0.3px' },
   nav:         { display: 'flex', alignItems: 'center', gap: '8px' },
   navBtn:      { padding: '7px 16px', borderRadius: '8px', border: `1px solid transparent`, background: 'transparent', color: C.textMuted, cursor: 'pointer', fontSize: '14px', fontWeight: '500', transition: 'all 0.2s', display: 'flex', alignItems: 'center', gap: '6px' },
-  navBtnActive:{ background: '#231708', color: C.text, border: `1px solid ${C.border}` },
+  navBtnActive:{ background: '#1a0505', color: C.text, border: `1px solid ${C.border}` },
   badge:       { background: C.accent, color: '#0d0905', borderRadius: '999px', padding: '1px 7px', fontSize: '11px', fontWeight: '700' },
-  userChip:    { color: C.textSub, fontSize: '13px', padding: '6px 12px', background: '#1a1108', border: `1px solid ${C.border}`, borderRadius: '999px' },
+  userChip:    { color: C.textSub, fontSize: '13px', padding: '6px 12px', background: '#1a0505', border: `1px solid ${C.border}`, borderRadius: '999px' },
   signOutBtn:  { padding: '7px 14px', borderRadius: '8px', border: `1px solid ${C.border}`, background: 'transparent', color: C.textMuted, cursor: 'pointer', fontSize: '13px' },
   signInBtn:   { padding: '7px 18px', borderRadius: '8px', border: 'none', background: C.gradient, color: '#0d0905', cursor: 'pointer', fontSize: '13px', fontWeight: '700' },
   main:        { flex: 1, padding: '48px 24px', maxWidth: '1100px', margin: '0 auto', width: '100%' },
   uploadView:  { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '32px' },
   hero:        { textAlign: 'center', maxWidth: '600px' },
-  heroBadge:   { display: 'inline-block', background: '#231708', border: `1px solid ${C.border}`, color: C.accent, padding: '4px 14px', borderRadius: '999px', fontSize: '12px', fontWeight: '600', letterSpacing: '0.5px', marginBottom: '18px' },
+  heroBadge:   { display: 'inline-block', background: '#1a0505', border: `1px solid ${C.border}`, color: C.accent, padding: '4px 14px', borderRadius: '999px', fontSize: '12px', fontWeight: '600', letterSpacing: '0.5px', marginBottom: '18px' },
   heroTitle:   { fontSize: '68px', fontWeight: '800', color: C.text, lineHeight: '1.05', marginBottom: '20px', letterSpacing: '-2px' },
   heroSub:     { color: C.textSub, fontSize: '17px', lineHeight: '1.7', marginBottom: '12px' },
   freeNote:    { color: C.textMuted, fontSize: '13px', marginTop: '4px' },
