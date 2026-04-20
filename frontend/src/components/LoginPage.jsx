@@ -49,7 +49,7 @@ export default function LoginPage({ onLogin, onClose, message }) {
 
       <div style={styles.logoRow}>
         <div style={styles.logoMark}>R</div>
-        <span style={styles.logoText}>ResumeAI</span>
+        <span style={styles.logoText}>AI Resume Analyzer</span>
       </div>
 
       {message && (
