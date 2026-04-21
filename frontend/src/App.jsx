@@ -228,7 +228,7 @@ export default function App() {
 
       {/* ── Footer ── */}
       <footer style={styles.footer}>
-        <p>Built with Spring Boot · React · Groq AI · Oracle 23ai</p>
+        <p>Built with Spring Boot · React · Groq AI · PostgreSQL</p>
       </footer>
 
       {/* ── Login Modal ── */}
