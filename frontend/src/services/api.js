@@ -4,7 +4,7 @@ const BACKEND = import.meta.env.VITE_API_URL || ''
 
 const api = axios.create({
   baseURL: `${BACKEND}/api/resume`,
-  timeout: 60000,
+  timeout: 120000,
   withCredentials: true,
 })
 

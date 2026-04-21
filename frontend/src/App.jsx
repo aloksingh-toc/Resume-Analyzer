@@ -178,7 +178,7 @@ export default function App() {
                   <span style={styles.dot} /><span style={{ ...styles.dot, animationDelay: '0.2s' }} /><span style={{ ...styles.dot, animationDelay: '0.4s' }} />
                 </div>
                 <p style={{ color: C.textSub, fontSize: '15px' }}>AI is reviewing your resume…</p>
-                <p style={{ color: C.textMuted, fontSize: '13px' }}>This takes about 10–20 seconds</p>
+                <p style={{ color: C.textMuted, fontSize: '13px' }}>Usually 10–20 seconds. First request may take up to 1 minute (server wake-up).</p>
               </div>
             )}
 
