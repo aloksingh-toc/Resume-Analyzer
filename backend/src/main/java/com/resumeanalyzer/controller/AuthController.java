@@ -1,6 +1,8 @@
 package com.resumeanalyzer.controller;
 
 import com.resumeanalyzer.dto.LoginRequest;
+import com.resumeanalyzer.dto.RegisterRequest;
+import com.resumeanalyzer.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,34 @@ import java.util.Map;
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
+    private final UserService userService;
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody RegisterRequest req, HttpServletRequest request) {
+        String username = req.getUsername() == null ? "" : req.getUsername().trim();
+        String password = req.getPassword() == null ? "" : req.getPassword();
+        if (username.length() < 3) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Username must be at least 3 characters"));
+        }
+        if (password.length() < 6) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Password must be at least 6 characters"));
+        }
+        try {
+            userService.register(username, password, req.getEmail());
+            // Auto-login after registration
+            Authentication auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(username, password)
+            );
+            SecurityContext sc = SecurityContextHolder.createEmptyContext();
+            sc.setAuthentication(auth);
+            SecurityContextHolder.setContext(sc);
+            HttpSession session = request.getSession(true);
+            session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, sc);
+            return ResponseEntity.ok(Map.of("username", auth.getName()));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest req, HttpServletRequest request) {

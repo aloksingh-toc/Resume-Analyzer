@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { login } from '../services/api'
+import { login, register } from '../services/api'
 
 const C = {
   bg:      '#0d0905',
@@ -15,23 +15,31 @@ const C = {
 }
 
 export default function LoginPage({ onLogin, onClose, message }) {
-  const [tab, setTab]           = useState('signin')
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError]       = useState('')
-  const [loading, setLoading]   = useState(false)
+  const [tab, setTab]                   = useState('signin')
+  const [username, setUsername]         = useState('')
+  const [password, setPassword]         = useState('')
+  const [confirmPassword, setConfirm]   = useState('')
+  const [email, setEmail]               = useState('')
+  const [error, setError]               = useState('')
+  const [loading, setLoading]           = useState(false)
 
   const isModal = !!onClose
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError('')
+    if (tab === 'signup') {
+      if (password !== confirmPassword) { setError('Passwords do not match'); return }
+      if (password.length < 6) { setError('Password must be at least 6 characters'); return }
+    }
     setLoading(true)
     try {
-      const data = await login(username, password)
+      const data = tab === 'signin'
+        ? await login(username, password)
+        : await register(username, password, email)
       onLogin(data.username)
     } catch (err) {
-      setError(err.response?.data?.error || 'Invalid credentials. Please try again.')
+      setError(err.response?.data?.error || (tab === 'signin' ? 'Invalid credentials.' : 'Registration failed. Please try again.'))
     } finally {
       setLoading(false)
     }
@@ -133,15 +141,74 @@ export default function LoginPage({ onLogin, onClose, message }) {
       )}
 
       {tab === 'signup' && (
-        <div style={styles.signupNote}>
-          <p style={{ color: C.sub, fontSize: '14px', textAlign: 'center', lineHeight: '1.7' }}>
-            Use Google or LinkedIn above to create your account instantly.
-            No forms, no password — just one click.
-          </p>
-          <p style={{ color: C.muted, fontSize: '12px', textAlign: 'center', marginTop: '12px' }}>
-            Your first analysis is always free, even without an account.
-          </p>
-        </div>
+        <>
+          <div style={styles.divider}>
+            <span style={styles.dividerLine} />
+            <span style={styles.dividerText}>or sign up with username</span>
+            <span style={styles.dividerLine} />
+          </div>
+
+          <form onSubmit={handleSubmit} style={styles.form}>
+            <div style={styles.field}>
+              <label style={styles.label}>Username <span style={{ color: C.muted }}>(min 3 chars)</span></label>
+              <input
+                type="text"
+                value={username}
+                onChange={e => setUsername(e.target.value)}
+                style={styles.input}
+                placeholder="Choose a username"
+                required
+                autoFocus
+              />
+            </div>
+            <div style={styles.field}>
+              <label style={styles.label}>Email <span style={{ color: C.muted }}>(optional)</span></label>
+              <input
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                style={styles.input}
+                placeholder="your@email.com"
+              />
+            </div>
+            <div style={styles.field}>
+              <label style={styles.label}>Password <span style={{ color: C.muted }}>(min 6 chars)</span></label>
+              <input
+                type="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                style={styles.input}
+                placeholder="Choose a password"
+                required
+              />
+            </div>
+            <div style={styles.field}>
+              <label style={styles.label}>Confirm Password</label>
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={e => setConfirm(e.target.value)}
+                style={styles.input}
+                placeholder="Repeat your password"
+                required
+              />
+            </div>
+            {error && <p style={styles.error}>{error}</p>}
+            <button
+              type="submit"
+              disabled={loading}
+              style={{ ...styles.submitBtn, ...(loading ? styles.btnDisabled : {}) }}
+            >
+              {loading ? 'Creating account…' : 'Create Account'}
+            </button>
+            <p style={{ color: C.muted, fontSize: '12px', textAlign: 'center', margin: 0 }}>
+              Already have an account?{' '}
+              <span style={{ color: C.sub, cursor: 'pointer', textDecoration: 'underline' }} onClick={() => setTab('signin')}>
+                Sign in
+              </span>
+            </p>
+          </form>
+        </>
       )}
     </div>
   )

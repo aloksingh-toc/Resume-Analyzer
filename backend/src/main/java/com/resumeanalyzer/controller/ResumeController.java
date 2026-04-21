@@ -46,7 +46,7 @@ public class ResumeController {
 
         if (!isLoggedIn && freeAnalysisTracker.hasUsedFreeAnalysis(clientIp)) {
             return ResponseEntity.status(403).body(Map.of(
-                "error",        "You've used your 1 free analysis. Sign in for unlimited access.",
+                "error",        "You've used your 3 free analyses. Sign in for unlimited access.",
                 "loginRequired", true
             ));
         }

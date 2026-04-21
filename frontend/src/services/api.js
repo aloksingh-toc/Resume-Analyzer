@@ -51,6 +51,11 @@ export const login = async (username, password) => {
   return response.data
 }
 
+export const register = async (username, password, email) => {
+  const response = await authApi.post('/register', { username, password, email })
+  return response.data
+}
+
 export const logout = async () => {
   await authApi.post('/logout')
 }

@@ -163,7 +163,7 @@ export default function App() {
               </p>
               {!isAuthenticated && (
                 <p style={styles.freeNote}>
-                  ✓ 1 free analysis — no account needed
+                  ✓ 3 free analyses — no account needed
                 </p>
               )}
             </div>
@@ -196,7 +196,7 @@ export default function App() {
 
             {!isAuthenticated && (
               <div style={styles.nudgeBanner}>
-                <span>✦ Sign in to save your history and get unlimited analyses</span>
+                <span>✦ Sign in to save your history and get unlimited analyses — or create a free account in seconds</span>
                 <button onClick={() => openLogin()} style={styles.nudgeBtn}>Sign In Free</button>
               </div>
             )}

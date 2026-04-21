@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class FreeAnalysisTracker {
 
-    private static final int FREE_LIMIT = 1;
+    private static final int FREE_LIMIT = 3;
 
     private final Map<String, Integer> counts = new ConcurrentHashMap<>();
 
