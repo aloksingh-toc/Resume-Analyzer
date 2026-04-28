@@ -5,6 +5,7 @@ import FeedbackDisplay from './components/FeedbackDisplay'
 import HistoryList from './components/HistoryList'
 import LoginPage from './components/LoginPage'
 import ResumeTips from './components/ResumeTips'
+import TemplateGallery from './components/TemplateGallery'
 import { analyzeResume, getHistory, getMe, logout, setUnauthorizedHandler } from './services/api'
 import { C as _theme } from './theme'
 
@@ -26,6 +27,7 @@ export default function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(null)
   const [username, setUsername]               = useState('')
   const [view, setView]                       = useState('upload')
+  const [mobileMenuOpen, setMobileMenuOpen]   = useState(false)
   const [loading, setLoading]                 = useState(false)
   const [historyLoading, setHistoryLoading]   = useState(false)
   const [analysis, setAnalysis]               = useState(null)
@@ -131,6 +133,10 @@ export default function App() {
             onClick={() => setView('upload')}
             style={{ ...styles.navBtn, ...(view === 'upload' ? styles.navBtnActive : {}) }}
           >Analyze</button>
+          <button
+            onClick={() => setView('templates')}
+            style={{ ...styles.navBtn, ...(view === 'templates' ? styles.navBtnActive : {}) }}
+          >Templates</button>
           {isAuthenticated && (
             <button
               onClick={() => { setView('history'); fetchHistory(0) }}
@@ -141,7 +147,7 @@ export default function App() {
           )}
           {isAuthenticated ? (
             <>
-              <span style={styles.userChip}>{username}</span>
+              <span style={styles.userChip} className="user-chip-text">{username}</span>
               <button onClick={handleLogout} style={styles.signOutBtn}>Sign Out</button>
             </>
           ) : (
@@ -212,6 +218,11 @@ export default function App() {
           </div>
         )}
 
+        {/* Templates View */}
+        {view === 'templates' && (
+          <TemplateGallery />
+        )}
+
         {/* History View */}
         {view === 'history' && (
           <div style={styles.historyView}>
@@ -269,11 +280,11 @@ const styles = {
   loadingBox:  { textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' },
   loadingDots: { display: 'flex', gap: '8px' },
   dot:         { width: '10px', height: '10px', background: C.accent, borderRadius: '50%', animation: 'pulse 1.2s ease-in-out infinite' },
-  resultView:  { width: '100%', animation: 'fadeIn 0.4s ease' },
+  resultView:  { width: '100%', overflowX: 'hidden', animation: 'fadeIn 0.4s ease' },
   resultToolbar:{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '20px' },
   backBtn:     { background: 'transparent', border: `1px solid ${C.border}`, color: C.textMuted, padding: '8px 16px', borderRadius: '8px', cursor: 'pointer', fontSize: '13px' },
   resultTitle: { fontSize: '22px', fontWeight: '700', color: C.text },
-  nudgeBanner: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'linear-gradient(145deg, #fffef8, #fef9c3)', border: `1px solid #f0d070`, borderLeft: `3px solid ${C.accent}`, borderRadius: '10px', padding: '12px 18px', marginBottom: '20px', color: '#78350f', fontSize: '14px' },
+  nudgeBanner: { display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '10px', background: 'linear-gradient(145deg, #fffef8, #fef9c3)', border: `1px solid #f0d070`, borderLeft: `3px solid ${C.accent}`, borderRadius: '10px', padding: '12px 18px', marginBottom: '20px', color: '#78350f', fontSize: '14px' },
   nudgeBtn:    { background: C.gradient, border: 'none', color: '#0d0905', padding: '6px 16px', borderRadius: '7px', cursor: 'pointer', fontSize: '13px', fontWeight: '700', whiteSpace: 'nowrap' },
   resultGrid:  {},
   historyView: { width: '100%', maxWidth: '700px', margin: '0 auto' },

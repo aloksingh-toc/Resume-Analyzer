@@ -26,7 +26,7 @@ export default function ScoreDisplay({ score, analysis }) {
 
       {/* Ring */}
       <div style={styles.circleWrap}>
-        <svg width="180" height="180" viewBox="0 0 180 180">
+        <svg width="100%" height="100%" viewBox="0 0 180 180">
           <circle cx="90" cy="90" r={radius} fill="none" stroke="#fde68a" strokeWidth="14" />
           <circle
             cx="90" cy="90" r={radius}
@@ -77,7 +77,7 @@ export default function ScoreDisplay({ score, analysis }) {
 const styles = {
   container:   { background: C.card_light, border: `1px solid ${C.border}`, borderRadius: '20px', padding: '28px', textAlign: 'center', boxShadow: '0 4px 24px rgba(245,158,11,0.10)' },
   heading:     { fontSize: '13px', fontWeight: '600', color: C.muted, textTransform: 'uppercase', letterSpacing: '1.5px', marginBottom: '20px' },
-  circleWrap:  { position: 'relative', display: 'inline-block', marginBottom: '16px' },
+  circleWrap:  { position: 'relative', display: 'block', width: '180px', maxWidth: '100%', margin: '0 auto 16px', aspectRatio: '1' },
   scoreInner:  { position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', display: 'flex', alignItems: 'baseline', gap: '2px' },
   scoreNumber: { fontSize: '44px', fontWeight: '900', lineHeight: 1 },
   outOf:       { fontSize: '16px', color: C.muted, fontWeight: '500' },

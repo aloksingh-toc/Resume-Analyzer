@@ -54,6 +54,12 @@ input, button, textarea, select {
   max-width: 1100px;
   margin: 0 auto;
   width: 100%;
+  overflow-x: hidden;
+}
+
+/* Prevent any child from overflowing the main container */
+.app-main > * {
+  max-width: 100%;
 }
 
 /* ── Hero ── */
@@ -155,4 +161,46 @@ input, button, textarea, select {
   .app-nav .user-chip-text {
     display: none;
   }
+}
+
+/* ─────────────────────────────────────────────
+   TEMPLATE GALLERY
+───────────────────────────────────────────── */
+.category-pills {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  flex-wrap: nowrap;
+  margin-bottom: 28px;
+}
+.category-pills::-webkit-scrollbar { display: none; }
+
+.template-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 1024px) {
+  .template-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .template-grid { grid-template-columns: 1fr; }
+  .category-pills { gap: 6px; }
+}
+
+/* ─────────────────────────────────────────────
+   FEEDBACK INFO STRIP responsive
+───────────────────────────────────────────── */
+.feedback-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 6px;
+  gap: 10px;
+  flex-wrap: wrap;
 }
