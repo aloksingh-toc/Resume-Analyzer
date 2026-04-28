@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,38 +19,29 @@ public class AIFeedback {
     @Min(0) @Max(100)
     private Integer score;
 
-    @Min(0) @Max(20)
-    @JsonProperty("summary_score")
-    private Integer summaryScore;
+    // ── Section scores ──────────────────────────────────────────────────────
+    @Min(0) @Max(20)  @JsonProperty("summary_score")        private Integer summaryScore;
+    @Min(0) @Max(20)  @JsonProperty("skills_score")         private Integer skillsScore;
+    @Min(0) @Max(30)  @JsonProperty("experience_score")     private Integer experienceScore;
+    @Min(0) @Max(15)  @JsonProperty("formatting_score")     private Integer formattingScore;
+    @Min(0) @Max(15)  @JsonProperty("professionalism_score")private Integer professionalismScore;
 
-    @Min(0) @Max(20)
-    @JsonProperty("skills_score")
-    private Integer skillsScore;
+    // ── Feedback text ───────────────────────────────────────────────────────
+    @JsonProperty("summary_feedback")     private String summaryFeedback;
+    @JsonProperty("skills_feedback")      private String skillsFeedback;
+    @JsonProperty("experience_feedback")  private String experienceFeedback;
+    @JsonProperty("formatting_feedback")  private String formattingFeedback;
+    @JsonProperty("overall_feedback")     private String overallFeedback;
 
-    @Min(0) @Max(30)
-    @JsonProperty("experience_score")
-    private Integer experienceScore;
+    // ── ATS & keywords (Rec #2, #6, #8) ────────────────────────────────────
+    @Min(0) @Max(100)
+    @JsonProperty("ats_score")            private Integer atsScore;
+    @JsonProperty("ats_issues")           private List<String> atsIssues;
+    @JsonProperty("keywords_found")       private List<String> keywordsFound;
+    @JsonProperty("keywords_missing")     private List<String> keywordsMissing;
+    @JsonProperty("missing_sections")     private List<String> missingSections;
 
-    @Min(0) @Max(15)
-    @JsonProperty("formatting_score")
-    private Integer formattingScore;
-
-    @Min(0) @Max(15)
-    @JsonProperty("professionalism_score")
-    private Integer professionalismScore;
-
-    @JsonProperty("summary_feedback")
-    private String summaryFeedback;
-
-    @JsonProperty("skills_feedback")
-    private String skillsFeedback;
-
-    @JsonProperty("experience_feedback")
-    private String experienceFeedback;
-
-    @JsonProperty("formatting_feedback")
-    private String formattingFeedback;
-
-    @JsonProperty("overall_feedback")
-    private String overallFeedback;
+    // ── JD matching (Rec #1) ────────────────────────────────────────────────
+    @Min(0) @Max(100)
+    @JsonProperty("jd_match_score")       private Integer jdMatchScore;
 }

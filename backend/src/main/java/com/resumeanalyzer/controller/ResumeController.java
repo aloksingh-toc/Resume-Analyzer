@@ -26,10 +26,20 @@ public class ResumeController {
     private final ResumeService       resumeService;
     private final FreeAnalysisTracker freeAnalysisTracker;
 
+    /** Social-proof counter — total resumes analyzed across all users (Rec #3). */
+    @GetMapping("/stats")
+    public ResponseEntity<Map<String, Long>> stats() {
+        return ResponseEntity.ok(Map.of("totalAnalyses", resumeService.getTotalCount()));
+    }
+
     @PostMapping(value = "/analyze", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> analyzeResume(@RequestParam("file") MultipartFile file,
-                                           HttpServletRequest request,
-                                           Authentication authentication) {
+    public ResponseEntity<?> analyzeResume(
+            @RequestParam("file")                          MultipartFile file,
+            @RequestParam(value = "jobDescription",  required = false) String jobDescription,
+            @RequestParam(value = "industry",        required = false) String industry,
+            HttpServletRequest request,
+            Authentication authentication) {
+
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body(Map.of("error", "Please upload a PDF file."));
         }
@@ -55,7 +65,8 @@ public class ResumeController {
         }
 
         try {
-            AnalysisResponse response = resumeService.analyzeResume(file, username);
+            AnalysisResponse response = resumeService.analyzeResume(
+                file, username, jobDescription, industry);
             if (!isLoggedIn) freeAnalysisTracker.record(clientIp);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
@@ -81,5 +92,4 @@ public class ResumeController {
             return ResponseEntity.notFound().build();
         }
     }
-
 }

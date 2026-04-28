@@ -204,3 +204,38 @@ input, button, textarea, select {
   gap: 10px;
   flex-wrap: wrap;
 }
+
+/* ─────────────────────────────────────────────
+   HOW IT WORKS — 3-step grid
+───────────────────────────────────────────── */
+.hiw-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  width: 100%;
+  max-width: 860px;
+  position: relative;
+}
+
+/* hide the connector arrow on last card */
+.hiw-grid > :last-child .hiw-connector {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .hiw-grid {
+    grid-template-columns: 1fr;
+  }
+  .hiw-connector {
+    display: none !important;
+  }
+}
+
+/* ─────────────────────────────────────────────
+   SECTIONS CHECKLIST grid overflow fix
+───────────────────────────────────────────── */
+@media (max-width: 500px) {
+  .sections-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}

@@ -26,19 +26,26 @@ public class ResumeService {
     private final AIService aiService;
     private final ResumeRepository resumeRepository;
 
-    public AnalysisResponse analyzeResume(MultipartFile file, String username) throws Exception {
+    public AnalysisResponse analyzeResume(MultipartFile file,
+                                          String username,
+                                          String jobDescription,
+                                          String industry) throws Exception {
+
         String filename = sanitizeFilename(file.getOriginalFilename());
-        log.info("Analyzing resume: {} for user: {}", filename, username != null ? username : "(guest)");
+        log.info("Analyzing resume: {} for user: {} industry: {}", filename,
+                 username != null ? username : "(guest)", industry);
 
         String resumeText = extractTextFromPDF(file);
 
         if (resumeText == null || resumeText.trim().isEmpty()) {
-            throw new RuntimeException("Could not extract text from the uploaded PDF. Please ensure the PDF is not scanned or image-based.");
+            throw new RuntimeException(
+                "Could not extract text from the uploaded PDF. " +
+                "Please ensure the PDF is not scanned or image-based.");
         }
 
         log.info("Extracted {} characters from PDF", resumeText.length());
 
-        AIFeedback feedback = aiService.analyzeResume(resumeText);
+        AIFeedback feedback = aiService.analyzeResume(resumeText, jobDescription, industry);
 
         ResumeAnalysis analysis = ResumeAnalysis.builder()
             .username(username)
@@ -54,10 +61,18 @@ public class ResumeService {
             .experienceFeedback(feedback.getExperienceFeedback())
             .formattingFeedback(feedback.getFormattingFeedback())
             .overallFeedback(feedback.getOverallFeedback())
+            // new fields
+            .atsScore(feedback.getAtsScore())
+            .atsIssues(feedback.getAtsIssues())
+            .keywordsFound(feedback.getKeywordsFound())
+            .keywordsMissing(feedback.getKeywordsMissing())
+            .missingSections(feedback.getMissingSections())
+            .jdMatchScore(feedback.getJdMatchScore())
+            .industry(industry != null && !industry.isBlank() ? industry : null)
             .build();
 
         ResumeAnalysis saved = resumeRepository.save(analysis);
-        log.info("Saved analysis with id: {}", saved.getId());
+        log.info("Saved analysis id: {}", saved.getId());
 
         return toResponse(saved);
     }
@@ -80,6 +95,12 @@ public class ResumeService {
             .orElseThrow(() -> new RuntimeException("Analysis not found."));
     }
 
+    public long getTotalCount() {
+        return resumeRepository.count();
+    }
+
+    // ── Helpers ───────────────────────────────────────────────────────────────
+
     private String extractTextFromPDF(MultipartFile file) throws IOException {
         try (PDDocument document = Loader.loadPDF(file.getBytes())) {
             PDFTextStripper stripper = new PDFTextStripper();
@@ -92,22 +113,29 @@ public class ResumeService {
         return name.replaceAll("[^a-zA-Z0-9._\\- ]", "").trim();
     }
 
-    private AnalysisResponse toResponse(ResumeAnalysis analysis) {
+    private AnalysisResponse toResponse(ResumeAnalysis a) {
         return AnalysisResponse.builder()
-            .id(analysis.getId())
-            .filename(analysis.getFilename())
-            .score(analysis.getScore())
-            .summaryScore(analysis.getSummaryScore())
-            .skillsScore(analysis.getSkillsScore())
-            .experienceScore(analysis.getExperienceScore())
-            .formattingScore(analysis.getFormattingScore())
-            .professionalismScore(analysis.getProfessionalismScore())
-            .summaryFeedback(analysis.getSummaryFeedback())
-            .skillsFeedback(analysis.getSkillsFeedback())
-            .experienceFeedback(analysis.getExperienceFeedback())
-            .formattingFeedback(analysis.getFormattingFeedback())
-            .overallFeedback(analysis.getOverallFeedback())
-            .submittedAt(analysis.getSubmittedAt())
+            .id(a.getId())
+            .filename(a.getFilename())
+            .score(a.getScore())
+            .summaryScore(a.getSummaryScore())
+            .skillsScore(a.getSkillsScore())
+            .experienceScore(a.getExperienceScore())
+            .formattingScore(a.getFormattingScore())
+            .professionalismScore(a.getProfessionalismScore())
+            .summaryFeedback(a.getSummaryFeedback())
+            .skillsFeedback(a.getSkillsFeedback())
+            .experienceFeedback(a.getExperienceFeedback())
+            .formattingFeedback(a.getFormattingFeedback())
+            .overallFeedback(a.getOverallFeedback())
+            .atsScore(a.getAtsScore())
+            .atsIssues(a.getAtsIssues())
+            .keywordsFound(a.getKeywordsFound())
+            .keywordsMissing(a.getKeywordsMissing())
+            .missingSections(a.getMissingSections())
+            .jdMatchScore(a.getJdMatchScore())
+            .industry(a.getIndustry())
+            .submittedAt(a.getSubmittedAt())
             .build();
     }
 }

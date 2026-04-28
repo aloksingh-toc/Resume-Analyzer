@@ -27,12 +27,19 @@ api.interceptors.response.use(
   }
 )
 
-export const analyzeResume = async (file) => {
+export const analyzeResume = async (file, jobDescription = '', industry = '') => {
   const formData = new FormData()
   formData.append('file', file)
+  if (jobDescription && jobDescription.trim()) formData.append('jobDescription', jobDescription.trim())
+  if (industry && industry.trim())            formData.append('industry', industry.trim())
   const response = await api.post('/analyze', formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
   })
+  return response.data
+}
+
+export const getStats = async () => {
+  const response = await api.get('/stats')
   return response.data
 }
 
