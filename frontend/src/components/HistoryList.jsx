@@ -1,19 +1,6 @@
-const C = {
-  card:   'linear-gradient(145deg, #fffef8, #fef9c3)',
-  border: '#f0d070',
-  text:   '#1c1917',
-  sub:    '#78350f',
-  muted:  '#a16207',
-}
+import { C, scoreColor } from '../theme'
 
 export default function HistoryList({ history, onSelect, hasMore, onLoadMore, loading }) {
-  const scoreColor = (s) => {
-    if (s >= 83) return '#16a34a'
-    if (s >= 56) return '#d97706'
-    if (s >= 41) return '#ea580c'
-    return '#dc2626'
-  }
-
   if (!history || history.length === 0) {
     return (
       <div style={styles.empty}>
@@ -63,7 +50,7 @@ export default function HistoryList({ history, onSelect, hasMore, onLoadMore, lo
 }
 
 const styles = {
-  container:       { background: C.card, border: `1px solid ${C.border}`, borderRadius: '20px', padding: '24px', boxShadow: '0 4px 24px rgba(245,158,11,0.10)' },
+  container:       { background: C.card_light, border: `1px solid ${C.border}`, borderRadius: '20px', padding: '24px', boxShadow: '0 4px 24px rgba(245,158,11,0.10)' },
   heading:         { fontSize: '17px', fontWeight: '700', color: C.text, marginBottom: '16px', fontStyle: 'italic' },
   list:            { display: 'flex', flexDirection: 'column', gap: '8px' },
   card:            { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 16px', background: '#fef9c3', border: `1px solid ${C.border}`, borderRadius: '10px', cursor: 'pointer', transition: 'all 0.2s' },

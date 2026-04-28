@@ -30,7 +30,7 @@ public class SecurityConfig {
     @Autowired(required = false)
     private ClientRegistrationRepository clientRegistrationRepository;
 
-    @Autowired
+    @Autowired(required = false)
     private OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @Bean

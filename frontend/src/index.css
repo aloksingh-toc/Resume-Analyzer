@@ -9,41 +9,150 @@ body {
   background: #0d0905;
   color: #fef3e2;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 input, button, textarea, select {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #100303;
-}
-::-webkit-scrollbar-thumb {
-  background: #2d0808;
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #f59e0b;
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #100303; }
+::-webkit-scrollbar-thumb { background: #2d0808; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #f59e0b; }
+
+@keyframes fadeIn  { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes spin    { to   { transform: rotate(360deg); } }
+@keyframes pulse   { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+@keyframes shimmer { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+
+/* ─────────────────────────────────────────────
+   RESPONSIVE LAYOUT — all breakpoint-dependent
+   layout lives here. Colors stay in theme.js.
+───────────────────────────────────────────── */
+
+/* ── App Shell ── */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 40px;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
+.app-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+.app-main {
+  flex: 1;
+  padding: 48px 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.3; }
+/* ── Hero ── */
+.hero-title {
+  font-size: clamp(30px, 5.5vw, 68px);
+  line-height: 1.05;
+  margin-bottom: 20px;
+  letter-spacing: clamp(-0.5px, -0.025em, -2px);
 }
 
-@keyframes shimmer {
-  0%   { background-position: -200% center; }
-  100% { background-position:  200% center; }
+/* ── Result grid (Score left, Feedback right) ── */
+.result-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 20px;
+  align-items: start;
+  width: 100%;
+}
+
+/* ── Upload card ── */
+.upload-card {
+  padding: 36px;
+  max-width: 580px;
+  margin: 0 auto;
+  width: 100%;
+  border-radius: 20px;
+}
+
+/* ── Tips grid ── */
+.tips-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* ── Feedback info strip ── */
+.info-strip {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.info-strip > * {
+  flex: 1;
+  min-width: 90px;
+}
+
+/* ─── Tablet landscape (≤ 1024px) ─── */
+@media (max-width: 1024px) {
+  .result-grid {
+    grid-template-columns: 280px 1fr;
+  }
+}
+
+/* ─── Tablet portrait (≤ 860px) ─── */
+@media (max-width: 860px) {
+  .result-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .app-header {
+    padding: 12px 24px;
+  }
+
+  .app-main {
+    padding: 32px 20px;
+  }
+}
+
+/* ─── Mobile (≤ 600px) ─── */
+@media (max-width: 600px) {
+  .app-header {
+    padding: 10px 16px;
+  }
+
+  .app-main {
+    padding: 24px 14px;
+  }
+
+  .upload-card {
+    padding: 24px 18px;
+  }
+
+  .tips-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .app-nav {
+    gap: 4px;
+  }
+}
+
+/* ─── Small mobile (≤ 400px) ─── */
+@media (max-width: 400px) {
+  .upload-card {
+    padding: 18px 14px;
+    border-radius: 14px;
+  }
+
+  .app-nav .user-chip-text {
+    display: none;
+  }
 }

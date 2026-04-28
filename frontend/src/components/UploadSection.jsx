@@ -1,15 +1,17 @@
 import { useState, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
+import { C as _theme } from '../theme'
 
+// UploadSection uses C.grad for the button gradient — alias to keep styles unchanged
 const C = {
-  card:    'linear-gradient(145deg, #fffef8, #fef9c3)',
-  surface: 'linear-gradient(145deg, #fef9c3, #fef3c7)',
-  border:  '#f0d070',
-  accent:  '#f59e0b',
-  grad:    'linear-gradient(135deg, #f59e0b, #ea580c)',
-  text:    '#1c1917',
-  sub:     '#78350f',
-  muted:   '#a16207',
+  card:    _theme.card_light,
+  surface: _theme.surface,
+  border:  _theme.border,
+  accent:  _theme.accent,
+  grad:    _theme.gradient,
+  text:    _theme.text,
+  sub:     _theme.sub,
+  muted:   _theme.muted,
 }
 
 export default function UploadSection({ onAnalyze, loading }) {
@@ -36,7 +38,7 @@ export default function UploadSection({ onAnalyze, loading }) {
   }
 
   return (
-    <div style={styles.container}>
+    <div style={styles.container} className="upload-card">
       <div style={styles.header}>
         <div style={styles.iconWrap}>
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -113,7 +115,7 @@ export default function UploadSection({ onAnalyze, loading }) {
 }
 
 const styles = {
-  container:    { background: C.card, border: `1px solid ${C.border}`, borderRadius: '20px', padding: '36px', maxWidth: '580px', margin: '0 auto', width: '100%', boxShadow: '0 4px 24px rgba(245,158,11,0.10)' },
+  container:    { background: C.card, border: `1px solid ${C.border}`, boxShadow: '0 4px 24px rgba(245,158,11,0.10)' },
   header:       { textAlign: 'center', marginBottom: '24px' },
   iconWrap:     { width: '52px', height: '52px', background: '#fff8e1', border: `1px solid ${C.border}`, borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px' },
   title:        { fontSize: '22px', fontWeight: '700', color: C.text, marginBottom: '6px' },

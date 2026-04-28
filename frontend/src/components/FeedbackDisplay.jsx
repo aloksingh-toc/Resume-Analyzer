@@ -1,13 +1,5 @@
 import { useState } from 'react'
-
-const C = {
-  card:    'linear-gradient(145deg, #fffef8, #fef9c3)',
-  surface: 'linear-gradient(145deg, #fef9c3, #fef3c7)',
-  border:  '#f0d070',
-  text:    '#1c1917',
-  sub:     '#78350f',
-  muted:   '#a16207',
-}
+import { C } from '../theme'
 
 const sections = [
   { key: 'summaryFeedback',    label: 'Summary',        scoreKey: 'summaryScore',       max: 20, color: '#d97706' },
@@ -23,15 +15,25 @@ function firstSentence(text) {
   return m ? m[0].trim() : (text.length > 110 ? text.slice(0, 110) + '…' : text)
 }
 
+/** Escapes user-controlled strings before injecting into the print HTML. */
+function escapeHtml(str) {
+  if (!str) return ''
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
 function downloadReport(analysis) {
   const scoreColor = analysis.score >= 83 ? '#16a34a' : analysis.score >= 56 ? '#d97706' : '#dc2626'
   const rows = sections.map(s => `
     <div style="margin:20px 0;padding:16px 20px;border-left:4px solid ${s.color};background:#fef9c3;border-radius:0 8px 8px 0">
-      <h3 style="color:#92400e;margin:0 0 8px;font-size:15px">${s.label}${s.scoreKey && analysis[s.scoreKey] != null ? ` — ${analysis[s.scoreKey]}/${s.max}` : ''}</h3>
-      <p style="color:#44403c;line-height:1.7;margin:0;font-size:14px">${analysis[s.key] || 'No feedback available.'}</p>
+      <h3 style="color:#92400e;margin:0 0 8px;font-size:15px">${escapeHtml(s.label)}${s.scoreKey && analysis[s.scoreKey] != null ? ` — ${analysis[s.scoreKey]}/${s.max}` : ''}</h3>
+      <p style="color:#44403c;line-height:1.7;margin:0;font-size:14px">${escapeHtml(analysis[s.key]) || 'No feedback available.'}</p>
     </div>`).join('')
 
-  const html = `<!DOCTYPE html><html><head><title>Resume Analysis — ${analysis.filename}</title>
+  const html = `<!DOCTYPE html><html><head><title>Resume Analysis — ${escapeHtml(analysis.filename)}</title>
     <style>body{font-family:system-ui,sans-serif;max-width:740px;margin:0 auto;padding:48px 32px;color:#1c1917;background:#fffef8}
     h1{font-size:26px;color:#92400e;border-bottom:2px solid #f59e0b;padding-bottom:12px;margin-bottom:4px}
     .score{font-size:72px;font-weight:900;color:${scoreColor};line-height:1}
@@ -39,7 +41,7 @@ function downloadReport(analysis) {
     @media print{body{padding:24px}}</style></head>
     <body>
       <h1>Resume Analysis Report</h1>
-      <p class="meta">File: <strong>${analysis.filename}</strong> &nbsp;·&nbsp; Analyzed: ${new Date(analysis.submittedAt).toLocaleString()} &nbsp;·&nbsp; Report #${analysis.id}</p>
+      <p class="meta">File: <strong>${escapeHtml(analysis.filename)}</strong> &nbsp;·&nbsp; Analyzed: ${new Date(analysis.submittedAt).toLocaleString()} &nbsp;·&nbsp; Report #${analysis.id}</p>
       <div style="text-align:center;margin:32px 0 24px">
         <div class="score">${analysis.score}</div>
         <p style="color:#78716c;margin:4px 0 0">/100 overall score</p>
@@ -129,7 +131,7 @@ export default function FeedbackDisplay({ analysis }) {
 }
 
 const styles = {
-  container:    { background: C.card, border: `1px solid ${C.border}`, borderRadius: '20px', padding: '28px', boxShadow: '0 4px 24px rgba(245,158,11,0.10)' },
+  container:    { background: C.card_light, border: `1px solid ${C.border}`, borderRadius: '20px', padding: '28px', boxShadow: '0 4px 24px rgba(245,158,11,0.10)' },
   header:       { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '6px' },
   heading:      { fontSize: '19px', fontWeight: '700', color: C.text, marginBottom: '3px' },
   filename:     { fontSize: '12px', color: C.muted },

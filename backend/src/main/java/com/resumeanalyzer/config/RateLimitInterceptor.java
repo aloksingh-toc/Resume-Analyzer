@@ -1,5 +1,6 @@
 package com.resumeanalyzer.config;
 
+import com.resumeanalyzer.config.HttpUtils;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +22,7 @@ public class RateLimitInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String ip = getClientIp(request);
+        String ip = HttpUtils.getClientIp(request);
         Bucket bucket = buckets.computeIfAbsent(ip, k -> newBucket());
 
         if (bucket.tryConsume(1)) {
@@ -40,13 +41,5 @@ public class RateLimitInterceptor implements HandlerInterceptor {
             .refillIntervally(CAPACITY, REFILL_PERIOD)
             .build();
         return Bucket.builder().addLimit(limit).build();
-    }
-
-    private String getClientIp(HttpServletRequest request) {
-        String forwarded = request.getHeader("X-Forwarded-For");
-        if (forwarded != null && !forwarded.isBlank()) {
-            return forwarded.split(",")[0].trim();
-        }
-        return request.getRemoteAddr();
     }
 }

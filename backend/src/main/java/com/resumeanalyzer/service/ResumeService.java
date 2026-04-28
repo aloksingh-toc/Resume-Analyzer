@@ -26,9 +26,9 @@ public class ResumeService {
     private final AIService aiService;
     private final ResumeRepository resumeRepository;
 
-    public AnalysisResponse analyzeResume(MultipartFile file) throws Exception {
+    public AnalysisResponse analyzeResume(MultipartFile file, String username) throws Exception {
         String filename = sanitizeFilename(file.getOriginalFilename());
-        log.info("Analyzing resume: {}", filename);
+        log.info("Analyzing resume: {} for user: {}", filename, username != null ? username : "(guest)");
 
         String resumeText = extractTextFromPDF(file);
 
@@ -41,6 +41,7 @@ public class ResumeService {
         AIFeedback feedback = aiService.analyzeResume(resumeText);
 
         ResumeAnalysis analysis = ResumeAnalysis.builder()
+            .username(username)
             .filename(filename)
             .score(feedback.getScore())
             .summaryScore(feedback.getSummaryScore())
@@ -61,9 +62,9 @@ public class ResumeService {
         return toResponse(saved);
     }
 
-    public PagedResponse<AnalysisResponse> getHistory(int page, int size) {
+    public PagedResponse<AnalysisResponse> getHistory(int page, int size, String username) {
         Page<ResumeAnalysis> result = resumeRepository
-            .findAllByOrderBySubmittedAtDesc(PageRequest.of(page, Math.min(size, 50)));
+            .findAllByUsernameOrderBySubmittedAtDesc(username, PageRequest.of(page, Math.min(size, 50)));
         return PagedResponse.<AnalysisResponse>builder()
             .content(result.getContent().stream().map(this::toResponse).collect(Collectors.toList()))
             .page(result.getNumber())

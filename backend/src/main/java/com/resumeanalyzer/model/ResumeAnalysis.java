@@ -20,6 +20,10 @@ public class ResumeAnalysis {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // null for anonymous analyses (pre-user-scoping or guest uploads)
+    @Column(length = 150)
+    private String username;
+
     @Column(nullable = false, length = 500)
     private String filename;
 

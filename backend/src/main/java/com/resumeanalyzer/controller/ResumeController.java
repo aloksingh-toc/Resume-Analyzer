@@ -1,6 +1,7 @@
 package com.resumeanalyzer.controller;
 
 import com.resumeanalyzer.config.FreeAnalysisTracker;
+import com.resumeanalyzer.config.HttpUtils;
 import com.resumeanalyzer.dto.AnalysisResponse;
 import com.resumeanalyzer.dto.PagedResponse;
 import com.resumeanalyzer.service.ResumeService;
@@ -11,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,7 +28,8 @@ public class ResumeController {
 
     @PostMapping(value = "/analyze", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> analyzeResume(@RequestParam("file") MultipartFile file,
-                                           HttpServletRequest request) {
+                                           HttpServletRequest request,
+                                           Authentication authentication) {
         if (file.isEmpty()) {
             return ResponseEntity.badRequest().body(Map.of("error", "Please upload a PDF file."));
         }
@@ -40,9 +41,11 @@ public class ResumeController {
             return ResponseEntity.badRequest().body(Map.of("error", "File size must be under 5 MB."));
         }
 
-        Authentication auth     = SecurityContextHolder.getContext().getAuthentication();
-        boolean isLoggedIn      = auth != null && auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken);
-        String  clientIp        = getClientIp(request);
+        boolean isLoggedIn = authentication != null
+                          && authentication.isAuthenticated()
+                          && !(authentication instanceof AnonymousAuthenticationToken);
+        String  clientIp  = HttpUtils.getClientIp(request);
+        String  username  = isLoggedIn ? authentication.getName() : null;
 
         if (!isLoggedIn && freeAnalysisTracker.hasUsedFreeAnalysis(clientIp)) {
             return ResponseEntity.status(403).body(Map.of(
@@ -52,7 +55,7 @@ public class ResumeController {
         }
 
         try {
-            AnalysisResponse response = resumeService.analyzeResume(file);
+            AnalysisResponse response = resumeService.analyzeResume(file, username);
             if (!isLoggedIn) freeAnalysisTracker.record(clientIp);
             return ResponseEntity.ok(response);
         } catch (Exception e) {
@@ -64,8 +67,10 @@ public class ResumeController {
     @GetMapping("/history")
     public ResponseEntity<PagedResponse<AnalysisResponse>> getHistory(
         @RequestParam(defaultValue = "0")  int page,
-        @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(resumeService.getHistory(page, size));
+        @RequestParam(defaultValue = "10") int size,
+        Authentication authentication) {
+        String username = authentication != null ? authentication.getName() : null;
+        return ResponseEntity.ok(resumeService.getHistory(page, size, username));
     }
 
     @GetMapping("/{id}")
@@ -77,9 +82,4 @@ public class ResumeController {
         }
     }
 
-    private String getClientIp(HttpServletRequest request) {
-        String forwarded = request.getHeader("X-Forwarded-For");
-        if (forwarded != null && !forwarded.isBlank()) return forwarded.split(",")[0].trim();
-        return request.getRemoteAddr();
-    }
 }

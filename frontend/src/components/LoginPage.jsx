@@ -1,17 +1,19 @@
 import { useState } from 'react'
 import { login, register } from '../services/api'
+import { C as _theme } from '../theme'
 
+// LoginPage uses C.grad and C.warm — alias to keep style references unchanged
 const C = {
-  bg:      '#0d0905',
-  card:    'linear-gradient(145deg, #fffef8, #fef9c3)',
-  surface: 'linear-gradient(145deg, #fef9c3, #fef3c7)',
-  border:  '#f0d070',
-  accent:  '#f59e0b',
-  warm:    '#ea580c',
-  grad:    'linear-gradient(135deg, #f59e0b, #ea580c)',
-  text:    '#1c1917',
-  sub:     '#78350f',
-  muted:   '#a16207',
+  bg:      _theme.bg,
+  card:    _theme.card_light,
+  surface: _theme.surface,
+  border:  _theme.border,
+  accent:  _theme.accent,
+  warm:    _theme.accentWarm,
+  grad:    _theme.gradient,
+  text:    _theme.text,
+  sub:     _theme.sub,
+  muted:   _theme.muted,
 }
 
 export default function LoginPage({ onLogin, onClose, message }) {
@@ -87,12 +89,6 @@ export default function LoginPage({ onLogin, onClose, message }) {
             <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.961L3.964 7.293C4.672 5.166 6.656 3.58 9 3.58z" fill="#EA4335"/>
           </svg>
           Continue with Google
-        </button>
-        <button onClick={() => handleOAuth('linkedin')} style={{ ...styles.oauthBtn, ...styles.oauthLinkedIn }}>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="#fff">
-            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-          </svg>
-          Continue with LinkedIn
         </button>
       </div>
 
@@ -234,7 +230,6 @@ const styles = {
   tabActive:     { background: '#fffef8', color: C.text, boxShadow: '0 1px 4px rgba(0,0,0,0.10)' },
   oauthSection:  { display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '4px' },
   oauthBtn:      { display: 'flex', alignItems: 'center', gap: '10px', padding: '11px 16px', background: '#fef9c3', border: `1px solid ${C.border}`, borderRadius: '10px', color: C.text, cursor: 'pointer', fontSize: '14px', fontWeight: '500', transition: 'all 0.2s', justifyContent: 'center' },
-  oauthLinkedIn: { background: '#0a1628', border: '1px solid #1a3a6b', color: '#fff' },
   divider:       { display: 'flex', alignItems: 'center', gap: '12px', margin: '20px 0' },
   dividerLine:   { flex: 1, height: '1px', background: C.border },
   dividerText:   { color: C.muted, fontSize: '12px', whiteSpace: 'nowrap' },
