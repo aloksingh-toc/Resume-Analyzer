@@ -19,8 +19,8 @@ export default function HistoryList({ history, onSelect, hasMore, onLoadMore, lo
             key={item.id}
             style={styles.card}
             onClick={() => onSelect(item)}
-            onMouseEnter={e => { e.currentTarget.style.background = '#fef3c7'; e.currentTarget.style.borderColor = '#e0b030' }}
-            onMouseLeave={e => { e.currentTarget.style.background = '#fef9c3'; e.currentTarget.style.borderColor = '#f0d070' }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#eef2ff'; e.currentTarget.style.borderColor = '#a5b4fc' }}
+            onMouseLeave={e => { e.currentTarget.style.background = '#f0f4ff'; e.currentTarget.style.borderColor = '#c7d2fe' }}
           >
             <div style={styles.cardLeft}>
               <div style={styles.pdfBadge}>PDF</div>
@@ -53,7 +53,7 @@ const styles = {
   container:       { background: C.card_light, border: `1px solid ${C.border}`, borderRadius: '20px', padding: '24px', boxShadow: '0 4px 24px rgba(245,158,11,0.10)' },
   heading:         { fontSize: '17px', fontWeight: '700', color: C.text, marginBottom: '16px', fontStyle: 'italic' },
   list:            { display: 'flex', flexDirection: 'column', gap: '8px' },
-  card:            { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 16px', background: '#fef9c3', border: `1px solid ${C.border}`, borderRadius: '10px', cursor: 'pointer', transition: 'all 0.2s' },
+  card:            { display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 16px', background: '#f0f4ff', border: `1px solid ${C.border}`, borderRadius: '10px', cursor: 'pointer', transition: 'all 0.2s' },
   cardLeft:        { display: 'flex', alignItems: 'center', gap: '12px' },
   pdfBadge:        { fontSize: '10px', fontWeight: '700', color: '#d97706', background: '#fef3c7', border: '1px solid #f0d070', padding: '3px 7px', borderRadius: '5px' },
   cardName:        { color: C.text, fontWeight: '500', fontSize: '14px', marginBottom: '2px' },

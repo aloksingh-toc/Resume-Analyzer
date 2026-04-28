@@ -85,7 +85,7 @@ const styles = {
   bars:        { display: 'flex', flexDirection: 'column', gap: '10px', textAlign: 'left' },
   barRow:      { display: 'flex', alignItems: 'center', gap: '10px' },
   barLabel:    { fontSize: '12px', color: C.sub, width: '80px', flexShrink: 0 },
-  barTrack:    { flex: 1, height: '6px', background: '#fde68a', borderRadius: '999px', overflow: 'hidden' },
+  barTrack:    { flex: 1, height: '6px', background: '#ddd6fe', borderRadius: '999px', overflow: 'hidden' },
   barFill:     { height: '100%', borderRadius: '999px', transition: 'width 1s ease' },
   barValue:    { fontSize: '11px', fontWeight: '700', width: '36px', textAlign: 'right' },
 }

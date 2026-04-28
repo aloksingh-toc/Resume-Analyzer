@@ -139,7 +139,7 @@ const styles = {
   hint:         { color: C.muted, fontSize: '12px', marginBottom: '16px' },
   accordion:    { display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '20px' },
   section:      { background: C.surface, border: `1px solid ${C.border}`, borderRadius: '12px', overflow: 'hidden', transition: 'border-color 0.2s' },
-  sectionOpen:  { border: `1px solid #e0b030` },
+  sectionOpen:  { border: `1px solid #a5b4fc` },
   sectionHead:  { width: '100%', display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 16px', background: 'transparent', border: 'none', cursor: 'pointer', textAlign: 'left' },
   dot:          { width: '10px', height: '10px', borderRadius: '50%', flexShrink: 0 },
   sectionMeta:  { flex: 1, display: 'flex', flexDirection: 'column', gap: '3px', overflow: 'hidden', minWidth: 0 },
@@ -153,7 +153,7 @@ const styles = {
   sectionBody:  { padding: '0 16px 16px 38px', animation: 'fadeIn 0.2s ease' },
   bodyText:     { color: C.sub, lineHeight: '1.75', fontSize: '14px' },
   infoStrip:    { display: 'flex', gap: '10px' },
-  infoCard:     { flex: 1, background: '#fef3c7', borderRadius: '10px', padding: '12px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', border: `1px solid ${C.border}` },
+  infoCard:     { flex: 1, background: '#eef2ff', borderRadius: '10px', padding: '12px', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px', border: `1px solid ${C.border}` },
   infoLabel:    { fontSize: '10px', color: C.muted, textTransform: 'uppercase', letterSpacing: '0.5px' },
   infoValue:    { fontSize: '14px', fontWeight: '700', color: C.text },
 }

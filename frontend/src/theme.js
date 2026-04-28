@@ -1,49 +1,48 @@
 /**
- * Shared design tokens — single source of truth for the warm amber theme.
- * Import this instead of defining a local `C` object in each component.
+ * Design tokens — Indigo/Navy theme (2026 AI SaaS standard)
+ * Inspired by LinkedIn, Notion AI, Resume.io color palettes.
  *
- * Dark palette (used in App.jsx header / page background):
+ * Dark palette (page shell, header, background):
  *   C.bg, C.card_dark, C.border_dark, C.accent, C.accentWarm, C.gradient,
  *   C.text_dark, C.textSub, C.textMuted
  *
- * Light palette (used in cards / form panels):
+ * Light palette (result cards, form panels):
  *   C.card_light, C.surface, C.border, C.text, C.sub, C.muted
  */
 export const C = {
   // ── Page / dark shell ────────────────────────────────────────
-  bg:          '#080808',
-  card_dark:   '#1a0505',
-  border_dark: '#2d0808',
+  bg:          '#060d1a',
+  card_dark:   '#0d1629',
+  border_dark: '#1a2744',
 
   // ── Light card surface ────────────────────────────────────────
-  card_light:  'linear-gradient(145deg, #fffef8, #fef9c3)',
-  surface:     'linear-gradient(145deg, #fef9c3, #fef3c7)',
-  border:      '#f0d070',
+  card_light:  'linear-gradient(145deg, #ffffff, #f0f4ff)',
+  surface:     'linear-gradient(145deg, #f0f4ff, #eef2ff)',
+  border:      '#c7d2fe',
 
-  // ── Accent (amber / orange) ───────────────────────────────────
-  accent:      '#f59e0b',
-  accentWarm:  '#ea580c',
-  gradient:    'linear-gradient(135deg, #f59e0b, #ea580c)',
+  // ── Accent (indigo / violet) ──────────────────────────────────
+  accent:      '#6366f1',
+  accentWarm:  '#8b5cf6',
+  gradient:    'linear-gradient(135deg, #6366f1, #8b5cf6)',
 
   // ── Text (dark bg) ────────────────────────────────────────────
-  text_dark:   '#fef3e2',
-  textSub:     '#c4935a',
-  textMuted:   '#8a5a5a',
+  text_dark:   '#f1f5f9',
+  textSub:     '#94a3b8',
+  textMuted:   '#64748b',
 
   // ── Text (light card bg) ─────────────────────────────────────
-  text:        '#1c1917',
-  sub:         '#78350f',
-  muted:       '#a16207',
+  text:        '#0f172a',
+  sub:         '#374151',
+  muted:       '#6b7280',
 }
 
 /**
  * Semantic score colors — used in ScoreDisplay and HistoryList.
- * Returns fill color based on a 0–100 score.
  */
 export function scoreColor(s) {
   if (s >= 83) return '#16a34a'
-  if (s >= 71) return '#d97706'
-  if (s >= 56) return '#ea580c'
+  if (s >= 71) return '#059669'
+  if (s >= 56) return '#d97706'
   if (s >= 41) return '#dc2626'
   return '#dc2626'
 }
@@ -53,8 +52,8 @@ export function scoreColor(s) {
  */
 export function scoreInfo(s) {
   if (s >= 83) return { fill: '#16a34a', text: '#15803d', label: 'Excellent' }
-  if (s >= 71) return { fill: '#d97706', text: '#b45309', label: 'Good' }
-  if (s >= 56) return { fill: '#ea580c', text: '#c2410c', label: 'Average' }
+  if (s >= 71) return { fill: '#059669', text: '#047857', label: 'Good' }
+  if (s >= 56) return { fill: '#d97706', text: '#b45309', label: 'Average' }
   if (s >= 41) return { fill: '#dc2626', text: '#b91c1c', label: 'Below Average' }
   return { fill: '#dc2626', text: '#b91c1c', label: 'Needs Work' }
 }

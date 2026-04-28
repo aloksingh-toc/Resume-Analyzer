@@ -1,12 +1,12 @@
 import { useState } from 'react'
 
 const C = {
-  text:    '#fef3e2',
-  sub:     '#78350f',
-  muted:   '#a16207',
-  border:  '#f0d070',
-  accent:  '#f59e0b',
-  grad:    'linear-gradient(135deg, #f59e0b, #ea580c)',
+  text:    '#f1f5f9',
+  sub:     '#374151',
+  muted:   '#64748b',
+  border:  '#1a2744',
+  accent:  '#6366f1',
+  grad:    'linear-gradient(135deg, #6366f1, #8b5cf6)',
 }
 
 const categories = ['All', 'Freshers', 'Experienced', 'NBFC / Finance', 'IT / Tech', 'Non-IT', 'Healthcare', 'Creative']
@@ -147,7 +147,7 @@ const styles = {
   pageSubtitle:{ color: '#8a5a5a', fontSize: '15px', lineHeight: '1.6' },
   count:       { color: '#8a5a5a', fontSize: '13px', marginBottom: '16px' },
 
-  pill:        { padding: '8px 18px', borderRadius: '999px', border: '1px solid #2d0808', background: 'transparent', color: '#8a5a5a', cursor: 'pointer', fontSize: '13px', fontWeight: '500', whiteSpace: 'nowrap', transition: 'all 0.2s', flexShrink: 0 },
+  pill:        { padding: '8px 18px', borderRadius: '999px', border: '1px solid #1a2744', background: 'transparent', color: '#64748b', cursor: 'pointer', fontSize: '13px', fontWeight: '500', whiteSpace: 'nowrap', transition: 'all 0.2s', flexShrink: 0 },
   pillActive:  { background: 'linear-gradient(135deg, #f59e0b, #ea580c)', color: '#fff', border: '1px solid transparent', fontWeight: '700' },
 
   card:        { background: 'linear-gradient(145deg, #fffef8, #fef9c3)', border: '1px solid #f0d070', borderRadius: '16px', overflow: 'hidden', transition: 'all 0.25s', cursor: 'default' },
