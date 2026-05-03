@@ -257,16 +257,16 @@ const styles = {
   atsIssue:     { fontSize: '12px', color: '#dc2626', lineHeight: '1.5' },
 
   // Keywords
-  keywordsBox:  { background: '#f8faff', border: '1px solid #e0e7ff', borderRadius: '12px', padding: '14px 16px', marginBottom: '12px', display: 'flex', flexDirection: 'column', gap: '12px' },
-  kwGroup:      {},
-  kwChips:      { display: 'flex', flexWrap: 'wrap', gap: '6px' },
-  kwFound:      { padding: '4px 10px', borderRadius: '999px', fontSize: '12px', fontWeight: '600', background: '#dcfce7', color: '#15803d', border: '1px solid #86efac' },
-  kwMissing:    { padding: '4px 10px', borderRadius: '999px', fontSize: '12px', fontWeight: '600', background: '#fee2e2', color: '#dc2626', border: '1px solid #fca5a5' },
+  keywordsBox:  { background: '#f8faff', border: '1px solid #e0e7ff', borderRadius: '12px', padding: '14px 16px', marginBottom: '12px', display: 'flex', flexDirection: 'column', gap: '12px', overflow: 'hidden' },
+  kwGroup:      { minWidth: 0 },
+  kwChips:      { display: 'flex', flexWrap: 'wrap', gap: '6px', overflow: 'hidden' },
+  kwFound:      { padding: '4px 10px', borderRadius: '999px', fontSize: '12px', fontWeight: '600', background: '#dcfce7', color: '#15803d', border: '1px solid #86efac', whiteSpace: 'nowrap' },
+  kwMissing:    { padding: '4px 10px', borderRadius: '999px', fontSize: '12px', fontWeight: '600', background: '#fee2e2', color: '#dc2626', border: '1px solid #fca5a5', whiteSpace: 'nowrap' },
 
   // Sections checklist
   sectionsBox:  { background: '#f8faff', border: '1px solid #e0e7ff', borderRadius: '12px', padding: '14px 16px', marginBottom: '12px' },
-  sectionsGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(155px, 1fr))', gap: '6px' },
-  secRow:       { display: 'flex', alignItems: 'center', gap: '7px', padding: '6px 10px', borderRadius: '8px', fontSize: '12px', fontWeight: '500' },
+  sectionsGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: '6px', alignItems: 'start' },
+  secRow:       { display: 'flex', alignItems: 'center', gap: '7px', padding: '6px 10px', borderRadius: '8px', fontSize: '12px', fontWeight: '500', height: '32px' },
   secOk:        { background: '#f0fdf4', color: '#15803d', border: '1px solid #bbf7d0' },
   secBad:       { background: '#fff1f2', color: '#be123c', border: '1px solid #fecdd3' },
   secIcon:      { fontWeight: '800', fontSize: '13px', flexShrink: 0 },

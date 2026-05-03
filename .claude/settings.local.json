@@ -7,7 +7,11 @@
       "Bash(git commit -m ' *)",
       "Bash(git push *)",
       "Bash(git commit *)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(curl -s http://localhost:5000/api/health)",
+      "PowerShell(Invoke-RestMethod -Method POST -Uri \"http://localhost:5000/api/auth/register\" -ContentType \"application/json\" -Body '{\"name\":\"Alok Singh\",\"email\":\"alokstest1@gmail.com\",\"password\":\"password123\"}' 2>&1)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(npm run *)"
     ]
   }
 }

@@ -79,6 +79,12 @@ input, button, textarea, select {
   width: 100%;
 }
 
+/* Prevent the feedback column from overflowing — critical for chip wrapping */
+.result-grid > * {
+  min-width: 0;
+  overflow: hidden;
+}
+
 /* ── Upload card ── */
 .upload-card {
   padding: 36px;
