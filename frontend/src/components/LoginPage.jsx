@@ -210,7 +210,7 @@ const styles = {
   cardModal:     { boxShadow: '0 25px 60px rgba(0,0,0,0.5)' },
   closeBtn:      { position: 'absolute', top: '16px', right: '16px', background: 'transparent', border: 'none', color: C.muted, fontSize: '18px', cursor: 'pointer', lineHeight: 1 },
   logoRow:       { display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px', justifyContent: 'center' },
-  logoMark:      { width: '34px', height: '34px', borderRadius: '8px', background: C.grad, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '900', fontSize: '16px', color: '#fff' },
+  logoMark:      { width: '34px', height: '34px', borderRadius: '8px', background: C.gradient, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: '900', fontSize: '16px', color: '#fff' },
   logoText:      { fontSize: '18px', fontWeight: '700', color: C.text },
   messageBanner: { background: '#fef3c7', border: `1px solid ${C.border}`, borderLeft: `3px solid ${C.accent}`, borderRadius: '8px', padding: '10px 14px', color: C.sub, fontSize: '13px', marginBottom: '16px', display: 'flex', gap: '8px', alignItems: 'flex-start' },
   tabs:          { display: 'flex', background: '#fef3c7', borderRadius: '10px', padding: '4px', marginBottom: '20px', gap: '4px' },
@@ -226,7 +226,7 @@ const styles = {
   label:         { color: C.sub, fontSize: '13px', fontWeight: '500' },
   input:         { background: '#fef9c3', border: `1px solid ${C.border}`, borderRadius: '8px', color: C.text, padding: '10px 14px', fontSize: '14px', outline: 'none', width: '100%', boxSizing: 'border-box', transition: 'border-color 0.2s' },
   error:         { color: '#dc2626', fontSize: '13px', margin: 0 },
-  submitBtn:     { background: C.grad, border: 'none', borderRadius: '10px', color: '#fff', fontSize: '15px', fontWeight: '700', padding: '12px', cursor: 'pointer', width: '100%', marginTop: '4px' },
+  submitBtn:     { background: C.gradient, border: 'none', borderRadius: '10px', color: '#fff', fontSize: '15px', fontWeight: '700', padding: '12px', cursor: 'pointer', width: '100%', marginTop: '4px' },
   btnDisabled:   { opacity: 0.6, cursor: 'not-allowed' },
   signupNote:    { paddingTop: '8px' },
 }

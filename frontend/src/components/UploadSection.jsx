@@ -194,7 +194,7 @@ const styles = {
   error:        { color: '#dc2626', fontSize: '13px', marginBottom: '10px', textAlign: 'center' },
   btnRow:       { display: 'flex', gap: '12px', justifyContent: 'center' },
   removeBtn:    { background: 'transparent', border: `1px solid ${C.border}`, color: C.muted, padding: '11px 22px', borderRadius: '10px', cursor: 'pointer', fontSize: '14px', fontWeight: '500' },
-  analyzeBtn:   { background: C.grad, border: 'none', color: '#fff', padding: '12px 32px', borderRadius: '10px', cursor: 'pointer', fontSize: '15px', fontWeight: '700', flex: 1, maxWidth: '220px', boxShadow: '0 4px 14px rgba(99,102,241,0.30)' },
+  analyzeBtn:   { background: C.gradient, border: 'none', color: '#fff', padding: '12px 32px', borderRadius: '10px', cursor: 'pointer', fontSize: '15px', fontWeight: '700', flex: 1, maxWidth: '220px', boxShadow: '0 4px 14px rgba(99,102,241,0.30)' },
   btnDisabled:  { opacity: 0.45, cursor: 'not-allowed', boxShadow: 'none' },
   loadingInner: { display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' },
   spinner:      { display: 'inline-block', width: '15px', height: '15px', border: '2px solid rgba(255,255,255,0.3)', borderTop: '2px solid #fff', borderRadius: '50%', animation: 'spin 0.8s linear infinite' },
