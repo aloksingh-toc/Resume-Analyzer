@@ -1,20 +1,9 @@
 import { useState } from 'react'
 import { login, register } from '../services/api'
-import { C as _theme } from '../theme'
+import { lightTokens, C as _theme } from '../theme'
+import { getOAuthUrl } from '../constants'
 
-// LoginPage uses C.grad and C.warm — alias to keep style references unchanged
-const C = {
-  bg:      _theme.bg,
-  card:    _theme.card_light,
-  surface: _theme.surface,
-  border:  _theme.border,
-  accent:  _theme.accent,
-  warm:    _theme.accentWarm,
-  grad:    _theme.gradient,
-  text:    _theme.text,
-  sub:     _theme.sub,
-  muted:   _theme.muted,
-}
+const C = { ...lightTokens, bg: _theme.bg, warm: _theme.accentWarm, grad: _theme.gradient }
 
 export default function LoginPage({ onLogin, onClose, message }) {
   const [tab, setTab]                   = useState('signin')
@@ -48,8 +37,7 @@ export default function LoginPage({ onLogin, onClose, message }) {
   }
 
   const handleOAuth = (provider) => {
-    const backend = import.meta.env.VITE_API_URL || ''
-    window.location.href = `${backend}/oauth2/authorization/${provider}`
+    window.location.href = getOAuthUrl(provider)
   }
 
   const card = (

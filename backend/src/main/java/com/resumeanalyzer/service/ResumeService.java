@@ -23,65 +23,39 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ResumeService {
 
-    private final AIService aiService;
-    private final ResumeRepository resumeRepository;
+    private final AIService            aiService;
+    private final ResumeRepository     resumeRepository;
+    private final ResumeAnalysisMapper mapper;
 
     public AnalysisResponse analyzeResume(MultipartFile file,
                                           String username,
                                           String jobDescription,
                                           String industry) throws Exception {
+        String filename   = sanitizeFilename(file.getOriginalFilename());
+        String resumeText = extractText(file);
 
-        String filename = sanitizeFilename(file.getOriginalFilename());
-        log.info("Analyzing resume: {} for user: {} industry: {}", filename,
-                 username != null ? username : "(guest)", industry);
+        log.info("Analyzing resume: {} | user: {} | industry: {}",
+                 filename, username != null ? username : "(guest)", industry);
 
-        String resumeText = extractTextFromPDF(file);
-
-        if (resumeText == null || resumeText.trim().isEmpty()) {
+        if (resumeText == null || resumeText.isBlank()) {
             throw new RuntimeException(
                 "Could not extract text from the uploaded PDF. " +
                 "Please ensure the PDF is not scanned or image-based.");
         }
 
-        log.info("Extracted {} characters from PDF", resumeText.length());
+        AIFeedback     feedback = aiService.analyzeResume(resumeText, jobDescription, industry);
+        ResumeAnalysis entity   = mapper.toEntity(feedback, filename, username, industry);
+        ResumeAnalysis saved    = resumeRepository.save(entity);
 
-        AIFeedback feedback = aiService.analyzeResume(resumeText, jobDescription, industry);
-
-        ResumeAnalysis analysis = ResumeAnalysis.builder()
-            .username(username)
-            .filename(filename)
-            .score(feedback.getScore())
-            .summaryScore(feedback.getSummaryScore())
-            .skillsScore(feedback.getSkillsScore())
-            .experienceScore(feedback.getExperienceScore())
-            .formattingScore(feedback.getFormattingScore())
-            .professionalismScore(feedback.getProfessionalismScore())
-            .summaryFeedback(feedback.getSummaryFeedback())
-            .skillsFeedback(feedback.getSkillsFeedback())
-            .experienceFeedback(feedback.getExperienceFeedback())
-            .formattingFeedback(feedback.getFormattingFeedback())
-            .overallFeedback(feedback.getOverallFeedback())
-            // new fields
-            .atsScore(feedback.getAtsScore())
-            .atsIssues(feedback.getAtsIssues())
-            .keywordsFound(feedback.getKeywordsFound())
-            .keywordsMissing(feedback.getKeywordsMissing())
-            .missingSections(feedback.getMissingSections())
-            .jdMatchScore(feedback.getJdMatchScore())
-            .industry(industry != null && !industry.isBlank() ? industry : null)
-            .build();
-
-        ResumeAnalysis saved = resumeRepository.save(analysis);
         log.info("Saved analysis id: {}", saved.getId());
-
-        return toResponse(saved);
+        return mapper.toResponse(saved);
     }
 
     public PagedResponse<AnalysisResponse> getHistory(int page, int size, String username) {
         Page<ResumeAnalysis> result = resumeRepository
             .findAllByUsernameOrderBySubmittedAtDesc(username, PageRequest.of(page, Math.min(size, 50)));
         return PagedResponse.<AnalysisResponse>builder()
-            .content(result.getContent().stream().map(this::toResponse).collect(Collectors.toList()))
+            .content(result.getContent().stream().map(mapper::toResponse).collect(Collectors.toList()))
             .page(result.getNumber())
             .totalPages(result.getTotalPages())
             .totalElements(result.getTotalElements())
@@ -91,7 +65,7 @@ public class ResumeService {
 
     public AnalysisResponse getById(Long id) {
         return resumeRepository.findById(id)
-            .map(this::toResponse)
+            .map(mapper::toResponse)
             .orElseThrow(() -> new RuntimeException("Analysis not found."));
     }
 
@@ -101,41 +75,14 @@ public class ResumeService {
 
     // ── Helpers ───────────────────────────────────────────────────────────────
 
-    private String extractTextFromPDF(MultipartFile file) throws IOException {
-        try (PDDocument document = Loader.loadPDF(file.getBytes())) {
-            PDFTextStripper stripper = new PDFTextStripper();
-            return stripper.getText(document);
+    private String extractText(MultipartFile file) throws IOException {
+        try (PDDocument doc = Loader.loadPDF(file.getBytes())) {
+            return new PDFTextStripper().getText(doc);
         }
     }
 
     private String sanitizeFilename(String name) {
         if (name == null || name.isBlank()) return "resume.pdf";
         return name.replaceAll("[^a-zA-Z0-9._\\- ]", "").trim();
-    }
-
-    private AnalysisResponse toResponse(ResumeAnalysis a) {
-        return AnalysisResponse.builder()
-            .id(a.getId())
-            .filename(a.getFilename())
-            .score(a.getScore())
-            .summaryScore(a.getSummaryScore())
-            .skillsScore(a.getSkillsScore())
-            .experienceScore(a.getExperienceScore())
-            .formattingScore(a.getFormattingScore())
-            .professionalismScore(a.getProfessionalismScore())
-            .summaryFeedback(a.getSummaryFeedback())
-            .skillsFeedback(a.getSkillsFeedback())
-            .experienceFeedback(a.getExperienceFeedback())
-            .formattingFeedback(a.getFormattingFeedback())
-            .overallFeedback(a.getOverallFeedback())
-            .atsScore(a.getAtsScore())
-            .atsIssues(a.getAtsIssues())
-            .keywordsFound(a.getKeywordsFound())
-            .keywordsMissing(a.getKeywordsMissing())
-            .missingSections(a.getMissingSections())
-            .jdMatchScore(a.getJdMatchScore())
-            .industry(a.getIndustry())
-            .submittedAt(a.getSubmittedAt())
-            .build();
     }
 }

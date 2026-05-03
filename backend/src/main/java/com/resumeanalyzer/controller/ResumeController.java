@@ -1,7 +1,10 @@
 package com.resumeanalyzer.controller;
 
+import com.resumeanalyzer.config.AuthUtils;
 import com.resumeanalyzer.config.FreeAnalysisTracker;
 import com.resumeanalyzer.config.HttpUtils;
+import com.resumeanalyzer.config.ResumeFileValidator;
+import com.resumeanalyzer.config.ResumeFileValidator.InvalidFileException;
 import com.resumeanalyzer.dto.AnalysisResponse;
 import com.resumeanalyzer.dto.PagedResponse;
 import com.resumeanalyzer.service.ResumeService;
@@ -10,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,10 +25,11 @@ import java.util.Map;
 @Slf4j
 public class ResumeController {
 
-    private final ResumeService       resumeService;
-    private final FreeAnalysisTracker freeAnalysisTracker;
+    private final ResumeService        resumeService;
+    private final FreeAnalysisTracker  freeAnalysisTracker;
+    private final ResumeFileValidator  fileValidator;
 
-    /** Social-proof counter — total resumes analyzed across all users (Rec #3). */
+    /** Social-proof counter — total resumes analyzed across all users. */
     @GetMapping("/stats")
     public ResponseEntity<Map<String, Long>> stats() {
         return ResponseEntity.ok(Map.of("totalAnalyses", resumeService.getTotalCount()));
@@ -34,32 +37,26 @@ public class ResumeController {
 
     @PostMapping(value = "/analyze", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> analyzeResume(
-            @RequestParam("file")                          MultipartFile file,
-            @RequestParam(value = "jobDescription",  required = false) String jobDescription,
-            @RequestParam(value = "industry",        required = false) String industry,
+            @RequestParam("file")                                    MultipartFile file,
+            @RequestParam(value = "jobDescription", required = false) String jobDescription,
+            @RequestParam(value = "industry",       required = false) String industry,
             HttpServletRequest request,
             Authentication authentication) {
 
-        if (file.isEmpty()) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Please upload a PDF file."));
-        }
-        String contentType = file.getContentType();
-        if (contentType == null || !contentType.equalsIgnoreCase("application/pdf")) {
-            return ResponseEntity.badRequest().body(Map.of("error", "Only PDF files are supported."));
-        }
-        if (file.getSize() > 5 * 1024 * 1024) {
-            return ResponseEntity.badRequest().body(Map.of("error", "File size must be under 5 MB."));
+        try {
+            fileValidator.validate(file);
+        } catch (InvalidFileException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
 
-        boolean isLoggedIn = authentication != null
-                          && authentication.isAuthenticated()
-                          && !(authentication instanceof AnonymousAuthenticationToken);
-        String  clientIp  = HttpUtils.getClientIp(request);
-        String  username  = isLoggedIn ? authentication.getName() : null;
+        boolean isLoggedIn = AuthUtils.isAuthenticated(authentication);
+        String  clientIp   = HttpUtils.getClientIp(request);
+        String  username   = isLoggedIn ? authentication.getName() : null;
 
         if (!isLoggedIn && freeAnalysisTracker.hasUsedFreeAnalysis(clientIp)) {
             return ResponseEntity.status(403).body(Map.of(
-                "error",        "You've used your 3 free analyses. Sign in for unlimited access.",
+                "error",         String.format("You've used your %d free analyses. Sign in for unlimited access.",
+                                               FreeAnalysisTracker.FREE_LIMIT),
                 "loginRequired", true
             ));
         }
@@ -77,9 +74,9 @@ public class ResumeController {
 
     @GetMapping("/history")
     public ResponseEntity<PagedResponse<AnalysisResponse>> getHistory(
-        @RequestParam(defaultValue = "0")  int page,
-        @RequestParam(defaultValue = "10") int size,
-        Authentication authentication) {
+            @RequestParam(defaultValue = "0")  int page,
+            @RequestParam(defaultValue = "10") int size,
+            Authentication authentication) {
         String username = authentication != null ? authentication.getName() : null;
         return ResponseEntity.ok(resumeService.getHistory(page, size, username));
     }

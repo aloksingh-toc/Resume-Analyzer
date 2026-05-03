@@ -8,18 +8,13 @@ import ResumeTips from './components/ResumeTips'
 import TemplateGallery from './components/TemplateGallery'
 import HowItWorks from './components/HowItWorks'
 import { analyzeResume, getHistory, getMe, logout, setUnauthorizedHandler, getStats } from './services/api'
-import { C as _theme } from './theme'
+import { darkTokens as C, C as _C } from './theme'
+import { FREE_ANALYSIS_LIMIT } from './constants'
 
-const C = {
-  bg:         _theme.bg,
-  card:       _theme.card_dark,
-  border:     _theme.border_dark,
-  accent:     _theme.accent,
-  accentWarm: _theme.accentWarm,
-  gradient:   _theme.gradient,
-  text:       _theme.text_dark,
-  textSub:    _theme.textSub,
-  textMuted:  _theme.textMuted,
+/** Strips HTML tags from backend error strings and returns a clean message. */
+function extractErrorMessage(err) {
+  const raw = err.response?.data?.error || err.message || 'An error occurred. Please try again.'
+  return String(raw).replace(/<[^>]*>/g, '')
 }
 
 export default function App() {
@@ -121,8 +116,7 @@ export default function App() {
         openLogin('You\'ve used your free analysis. Sign in for unlimited access.')
         return
       }
-      const raw = err.response?.data?.error || err.message || 'An error occurred. Please try again.'
-      setError(String(raw).replace(/<[^>]*>/g, ''))
+      setError(extractErrorMessage(err))
     } finally {
       setLoading(false)
     }
@@ -200,7 +194,7 @@ export default function App() {
               )}
 
               {!isAuthenticated && (
-                <p style={styles.freeNote}>3 free analyses — no account needed</p>
+                <p style={styles.freeNote}>{FREE_ANALYSIS_LIMIT} free analyses — no account needed</p>
               )}
             </div>
 
@@ -324,7 +318,7 @@ const styles = {
   proofText:     { fontSize: '13px', color: C.textMuted },
 
   freeNote:      { color: C.textMuted, fontSize: '13px', marginTop: '4px' },
-  errorBox:      { background: '#1e0a2e', border: '1px solid #7c3aed', color: '#ddd6fe', padding: '14px 20px', borderRadius: '10px', maxWidth: '500px', textAlign: 'center' },
+  errorBox:      { background: _C.errorSurface, border: `1px solid ${_C.errorBorder}`, color: _C.errorText, padding: '14px 20px', borderRadius: '10px', maxWidth: '500px', textAlign: 'center' },
   loadingBox:    { textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' },
   loadingDots:   { display: 'flex', gap: '8px' },
   dot:           { width: '10px', height: '10px', background: C.accent, borderRadius: '50%', animation: 'pulse 1.2s ease-in-out infinite' },

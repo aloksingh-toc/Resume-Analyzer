@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import { darkTokens as D, C } from '../theme'
+
+const TEMPLATE_URL = 'https://docs.google.com/document/u/0/?ftv=1&tgif=d'
 
 const categories = ['All', 'Freshers', 'Experienced', 'NBFC / Finance', 'IT / Tech', 'Non-IT', 'Healthcare', 'Creative']
 
@@ -108,13 +111,13 @@ function TemplateCard({ template: t }) {
         <h3 style={styles.name}>{t.name}</h3>
         <p style={styles.desc}>{t.desc}</p>
         <a
-          href="https://docs.google.com/document/u/0/?ftv=1&tgif=d"
+          href={TEMPLATE_URL}
           target="_blank"
           rel="noopener noreferrer"
           style={{
             ...styles.btn,
-            background: hovered ? 'linear-gradient(135deg, #6366f1, #8b5cf6)' : 'transparent',
-            color: hovered ? '#fff' : '#6366f1',
+            background: hovered ? C.gradient : 'transparent',
+            color: hovered ? '#fff' : C.accent,
           }}
         >
           Use Template
@@ -127,28 +130,28 @@ function TemplateCard({ template: t }) {
 const styles = {
   wrap:        { width: '100%', animation: 'fadeIn 0.3s ease' },
   pageHeader:  { marginBottom: '24px' },
-  pageTitle:   { fontSize: '28px', fontWeight: '800', color: '#f1f5f9', marginBottom: '8px', letterSpacing: '-0.5px' },
-  pageSubtitle:{ color: '#64748b', fontSize: '15px', lineHeight: '1.6' },
-  count:       { color: '#64748b', fontSize: '13px', marginBottom: '16px' },
+  pageTitle:   { fontSize: '28px', fontWeight: '800', color: D.text, marginBottom: '8px', letterSpacing: '-0.5px' },
+  pageSubtitle:{ color: D.textMuted, fontSize: '15px', lineHeight: '1.6' },
+  count:       { color: D.textMuted, fontSize: '13px', marginBottom: '16px' },
 
-  pill:        { padding: '8px 18px', borderRadius: '999px', border: '1px solid #1a2744', background: 'transparent', color: '#64748b', cursor: 'pointer', fontSize: '13px', fontWeight: '500', whiteSpace: 'nowrap', transition: 'all 0.2s', flexShrink: 0 },
-  pillActive:  { background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', color: '#fff', border: '1px solid transparent', fontWeight: '700' },
+  pill:        { padding: '8px 18px', borderRadius: '999px', border: `1px solid ${D.border}`, background: 'transparent', color: D.textMuted, cursor: 'pointer', fontSize: '13px', fontWeight: '500', whiteSpace: 'nowrap', transition: 'all 0.2s', flexShrink: 0 },
+  pillActive:  { background: D.gradient, color: '#fff', border: '1px solid transparent', fontWeight: '700' },
 
-  card:        { background: 'linear-gradient(145deg, #ffffff, #f0f4ff)', border: '1px solid #c7d2fe', borderRadius: '16px', overflow: 'hidden', transition: 'all 0.25s' },
-  cardHover:   { transform: 'translateY(-4px)', boxShadow: '0 12px 32px rgba(99,102,241,0.18)', borderColor: '#a5b4fc' },
+  card:        { background: C.card_light, border: `1px solid ${C.border}`, borderRadius: '16px', overflow: 'hidden', transition: 'all 0.25s' },
+  cardHover:   { transform: 'translateY(-4px)', boxShadow: `0 12px 32px ${C.accent}30`, borderColor: '#a5b4fc' },
 
-  preview:     { background: '#0d1629', padding: '28px 24px 20px', position: 'relative', display: 'flex', justifyContent: 'center' },
+  preview:     { background: D.card, padding: '28px 24px 20px', position: 'relative', display: 'flex', justifyContent: 'center' },
   previewDoc:  { background: '#ffffff', borderRadius: '6px', padding: '16px 14px', width: '140px', boxShadow: '0 4px 16px rgba(0,0,0,0.3)', display: 'flex', flexDirection: 'column', gap: '6px' },
-  docLine1:    { height: '8px', background: '#6366f1', borderRadius: '4px', width: '70%' },
-  docLine2:    { height: '5px', background: '#c7d2fe', borderRadius: '4px', width: '50%' },
+  docLine1:    { height: '8px', background: C.accent, borderRadius: '4px', width: '70%' },
+  docLine2:    { height: '5px', background: C.border, borderRadius: '4px', width: '50%' },
   docLineShort:{ height: '4px', background: '#e2e8f0', borderRadius: '4px', width: '35%' },
   docLineFull: { height: '4px', background: '#e2e8f0', borderRadius: '4px', width: '100%' },
   docLineMed:  { height: '4px', background: '#e2e8f0', borderRadius: '4px', width: '80%' },
 
-  catBadge:    { position: 'absolute', top: '10px', right: '10px', fontSize: '10px', fontWeight: '700', padding: '3px 8px', borderRadius: '999px', background: 'rgba(99,102,241,0.15)', color: '#a5b4fc', border: '1px solid rgba(99,102,241,0.25)', letterSpacing: '0.3px' },
+  catBadge:    { position: 'absolute', top: '10px', right: '10px', fontSize: '10px', fontWeight: '700', padding: '3px 8px', borderRadius: '999px', background: `${C.accent}25`, color: '#a5b4fc', border: `1px solid ${C.accent}40`, letterSpacing: '0.3px' },
 
   body:        { padding: '16px 18px 18px' },
-  name:        { fontSize: '15px', fontWeight: '700', color: '#0f172a', marginBottom: '6px' },
-  desc:        { fontSize: '12px', color: '#6b7280', lineHeight: '1.6', marginBottom: '14px' },
-  btn:         { display: 'block', textAlign: 'center', padding: '9px 16px', borderRadius: '8px', border: '1.5px solid #6366f1', fontSize: '13px', fontWeight: '600', textDecoration: 'none', transition: 'all 0.2s' },
+  name:        { fontSize: '15px', fontWeight: '700', color: C.text, marginBottom: '6px' },
+  desc:        { fontSize: '12px', color: C.muted, lineHeight: '1.6', marginBottom: '14px' },
+  btn:         { display: 'block', textAlign: 'center', padding: '9px 16px', borderRadius: '8px', border: `1.5px solid ${C.accent}`, fontSize: '13px', fontWeight: '600', textDecoration: 'none', transition: 'all 0.2s' },
 }

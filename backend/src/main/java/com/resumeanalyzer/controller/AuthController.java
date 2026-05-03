@@ -1,5 +1,6 @@
 package com.resumeanalyzer.controller;
 
+import com.resumeanalyzer.config.AuthUtils;
 import com.resumeanalyzer.dto.LoginRequest;
 import com.resumeanalyzer.dto.RegisterRequest;
 import com.resumeanalyzer.service.UserService;
@@ -8,15 +9,12 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -41,15 +39,10 @@ public class AuthController {
         }
         try {
             userService.register(username, password, req.getEmail());
-            // Auto-login after registration
             Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(username, password)
             );
-            SecurityContext sc = SecurityContextHolder.createEmptyContext();
-            sc.setAuthentication(auth);
-            SecurityContextHolder.setContext(sc);
-            HttpSession session = request.getSession(true);
-            session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, sc);
+            AuthUtils.establishSession(auth, request);
             return ResponseEntity.ok(Map.of("username", auth.getName()));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
@@ -62,11 +55,7 @@ public class AuthController {
             Authentication auth = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword())
             );
-            SecurityContext sc = SecurityContextHolder.createEmptyContext();
-            sc.setAuthentication(auth);
-            SecurityContextHolder.setContext(sc);
-            HttpSession session = request.getSession(true);
-            session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, sc);
+            AuthUtils.establishSession(auth, request);
             return ResponseEntity.ok(Map.of("username", auth.getName()));
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -84,7 +73,7 @@ public class AuthController {
 
     @GetMapping("/me")
     public ResponseEntity<?> me(Authentication auth) {
-        if (auth == null || !auth.isAuthenticated() || auth instanceof AnonymousAuthenticationToken) {
+        if (!AuthUtils.isAuthenticated(auth)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         String username;

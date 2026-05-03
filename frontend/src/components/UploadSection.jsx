@@ -1,17 +1,7 @@
 import { useState, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { C as _theme } from '../theme'
-
-const C = {
-  card:    _theme.card_light,
-  surface: _theme.surface,
-  border:  _theme.border,
-  accent:  _theme.accent,
-  grad:    _theme.gradient,
-  text:    _theme.text,
-  sub:     _theme.sub,
-  muted:   _theme.muted,
-}
+import { lightTokens as C } from '../theme'
+import { MAX_FILE_SIZE_MB, MAX_FILE_SIZE_BYTES } from '../constants'
 
 const INDUSTRIES = [
   '', 'Software / IT', 'Data Science / AI', 'DevOps / Cloud', 'Cybersecurity',
@@ -38,7 +28,7 @@ export default function UploadSection({ onAnalyze, loading }) {
     onDrop,
     accept: { 'application/pdf': ['.pdf'] },
     maxFiles: 1,
-    maxSize: 5 * 1024 * 1024,
+    maxSize: MAX_FILE_SIZE_BYTES,
     disabled: loading,
   })
 
@@ -51,7 +41,7 @@ export default function UploadSection({ onAnalyze, loading }) {
     <div style={styles.container} className="upload-card">
       <div style={styles.header}>
         <div style={styles.iconWrap}>
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#6366f1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.accent} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
             <polyline points="14,2 14,8 20,8"/>
             <line x1="16" y1="13" x2="8" y2="13"/>
@@ -60,7 +50,7 @@ export default function UploadSection({ onAnalyze, loading }) {
           </svg>
         </div>
         <h2 style={styles.title}>Upload Your Resume</h2>
-        <p style={styles.subtitle}>PDF only · Max 5 MB · Results in under 20 seconds</p>
+        <p style={styles.subtitle}>PDF only · Max {MAX_FILE_SIZE_MB} MB · Results in under 20 seconds</p>
       </div>
 
       {/* Industry selector — Rec #5 */}
@@ -123,7 +113,7 @@ export default function UploadSection({ onAnalyze, loading }) {
         {selectedFile ? (
           <div style={styles.filePreview}>
             <div style={styles.fileIconWrap}>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6366f1" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={C.accent} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                 <polyline points="14,2 14,8 20,8"/>
               </svg>
