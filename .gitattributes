@@ -1,0 +1,14 @@
+# ── GitHub Linguist overrides ──────────────────────────────────────────────
+# Tell GitHub which files to count (and not count) when detecting repo language.
+
+# Ignore generated build output
+frontend/dist/**        linguist-generated=true
+
+# Ignore dependency folders
+**/node_modules/**      linguist-vendored=true
+
+# Treat JSX as JavaScript so GitHub shows JavaScript as primary language
+*.jsx                   linguist-language=JavaScript
+
+# Ignore static entry HTML (not application code)
+frontend/index.html     linguist-documentation=true
